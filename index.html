@@ -523,12 +523,8 @@
       width: 100%;
       height: 100%;
       display: block;
-      cursor: grab;
+      cursor: default;
       touch-action: none;
-    }
-
-    #restaurant-canvas:active {
-      cursor: grabbing;
     }
 
     .canvas-hud {
@@ -570,14 +566,14 @@
       color: #7E5109;
     }
 
-    /* 카메라 줌/시점 이동 & 가구 배치 컨트롤 바 */
+    /* 가구 배치 이동 컨트롤 바 (고정 매장 화면) */
     .camera-controls {
       position: absolute;
       bottom: 8px;
       left: 8px;
       right: 8px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       gap: 6px;
       z-index: 6;
@@ -1473,7 +1469,7 @@
 
       <div class="canvas-hud">
         <div class="hud-row">
-          <div class="hud-tag" id="hud-staff-count">👨‍🍳 셰프 1 · 🐾 알바 1 · 🪑 테이블 2/10</div>
+          <div class="hud-tag" id="hud-staff-count">👨‍🍳 셰프 1 · 🐾 알바 1 · 🪑 테이블 2/3</div>
           <div class="hud-tag" id="hud-star-rating" style="background:#FFF8E7;border-color:#F5B041;color:#B7791F;">⭐ 별점 5.0 (방문·팁 정상)</div>
           <div class="hud-tag" id="hud-Guest-count">🐱 손님 0명</div>
         </div>
@@ -1489,15 +1485,8 @@
         <button class="placement-cancel-btn" id="btn-cancel-placement">닫기</button>
       </div>
 
-      <!-- 카메라 줌/좌우 시점 이동 및 테이블/인테리어 배치 이동 모드 컨트롤 -->
+      <!-- 고정 매장 화면용 테이블/인테리어 배치 이동 모드 컨트롤 -->
       <div class="camera-controls">
-        <div class="cam-group">
-          <button class="cam-btn" id="btn-pan-left" title="왼쪽으로 시점 이동">◀</button>
-          <button class="cam-btn" id="btn-zoom-out" title="맵 축소">➖</button>
-          <button class="cam-btn" id="btn-cam-reset" title="시점 초기화">100%</button>
-          <button class="cam-btn" id="btn-zoom-in" title="맵 확대">➕</button>
-          <button class="cam-btn" id="btn-pan-right" title="오른쪽으로 시점 이동">▶</button>
-        </div>
         <div class="cam-group">
           <button class="cam-btn" id="btn-toggle-edit-table" title="배치된 테이블 및 인테리어 설비 드래그 이동 모드">🪑 테이블 이동: OFF</button>
         </div>
@@ -2049,187 +2038,187 @@
     // =========================================================================
     const CAFE_DECOR_ITEMS = [
       // ==================== Stage 1 전용 설비 (6종: 길거리 포차 & 노점) ====================
-      { id: 'espresso_bar', unlockStage: 1, renderType: 'espresso', name: '미니 드립 커피포트', icon: '☕', baseCost: 180, max: 5, desc: '주방 조리 속도 +8% 증가 (복수 배치 가능·효과 1회 적용)', wx: 175, wy: 215, profitBonus: 0, speedBonus: 0.08 },
-      { id: 'dessert_case', unlockStage: 1, renderType: 'showcase', name: '길거리 토스트 진열대', icon: '🥪', baseCost: 320, max: 5, desc: '모든 메뉴 판매 단가 +12% 증가 (복수 배치 가능)', wx: 880, wy: 215, profitBonus: 0.12, speedBonus: 0 },
-      { id: 'jukebox', unlockStage: 1, renderType: 'jukebox', name: '포차 레트로 라디오', icon: '📻', baseCost: 520, max: 5, desc: '손님 식사 속도 +10% & 팁 확률 +4%p 증가', wx: 120, wy: 260, profitBonus: 0.05, speedBonus: 0.04 },
-      { id: 'cat_tower', unlockStage: 1, renderType: 'cat_tower', name: '길냥이 원목 캣타워', icon: '🧶', baseCost: 850, max: 5, desc: 'VIP 손님 등장 확률 +3%p 증가', wx: 1030, wy: 270, profitBonus: 0.08, speedBonus: 0 },
-      { id: 'plant_pot', unlockStage: 1, renderType: 'leafy_plant', name: '공기정화 몬스테라 화분', icon: '🪴', baseCost: 260, max: 5, desc: '손님 입장 주기 6% 단축 (풍성한 2톤 손그림 화분)', wx: 120, wy: 510, profitBonus: 0.05, speedBonus: 0.03 },
-      { id: 'aquarium', unlockStage: 1, renderType: 'aquarium', name: '수제 어묵탕 & 미니 수조', icon: '🐠', baseCost: 1400, max: 5, desc: '팁(💰) 금액 +25% 증가', wx: 1030, wy: 510, profitBonus: 0.15, speedBonus: 0 },
+      { id: 'espresso_bar', unlockStage: 1, renderType: 'espresso', name: '미니 드립 커피포트', icon: '☕', baseCost: 180, max: 5, desc: '주방 조리 속도 +8% 증가 (복수 배치 가능·효과 1회 적용)', wx: 101, wy: 179, profitBonus: 0, speedBonus: 0.08 },
+      { id: 'dessert_case', unlockStage: 1, renderType: 'showcase', name: '길거리 토스트 진열대', icon: '🥪', baseCost: 320, max: 5, desc: '모든 메뉴 판매 단가 +12% 증가 (복수 배치 가능)', wx: 389, wy: 179, profitBonus: 0.12, speedBonus: 0 },
+      { id: 'jukebox', unlockStage: 1, renderType: 'jukebox', name: '포차 레트로 라디오', icon: '📻', baseCost: 520, max: 5, desc: '손님 식사 속도 +10% & 팁 확률 +4%p 증가', wx: 78, wy: 202, profitBonus: 0.05, speedBonus: 0.04 },
+      { id: 'cat_tower', unlockStage: 1, renderType: 'cat_tower', name: '길냥이 원목 캣타워', icon: '🧶', baseCost: 850, max: 5, desc: 'VIP 손님 등장 확률 +3%p 증가', wx: 451, wy: 208, profitBonus: 0.08, speedBonus: 0 },
+      { id: 'plant_pot', unlockStage: 1, renderType: 'leafy_plant', name: '공기정화 몬스테라 화분', icon: '🪴', baseCost: 260, max: 5, desc: '손님 입장 주기 6% 단축 (풍성한 2톤 손그림 화분)', wx: 78, wy: 334, profitBonus: 0.05, speedBonus: 0.03 },
+      { id: 'aquarium', unlockStage: 1, renderType: 'aquarium', name: '수제 어묵탕 & 미니 수조', icon: '🐠', baseCost: 1400, max: 5, desc: '팁(💰) 금액 +25% 증가', wx: 451, wy: 334, profitBonus: 0.15, speedBonus: 0 },
 
       // ==================== Stage 2 전용 설비 (8종: 햇살 브런치 카페테리아) ====================
-      { id: 'red_sofa_booth', unlockStage: 2, renderType: 'sofa_table_set', name: '레드벨벳 2인 소파 & 티테이블', icon: '🛋️', baseCost: 2200, max: 5, desc: '전체 메뉴 수익 +10% 증가 (아이소메트릭 소파 & 원목 테이블 세트)', wx: 210, wy: 540, profitBonus: 0.10, speedBonus: 0 },
-      { id: 'flower_bush_pot', unlockStage: 2, renderType: 'flower_pot', name: '노란 꽃송이 덤불 화분', icon: '🌼', baseCost: 2600, max: 5, desc: '직원 이동 속도 +5% 증가 (둥근 2톤 손그림 꽃화분)', wx: 360, wy: 210, profitBonus: 0.04, speedBonus: 0.05 },
-      { id: 'wood_fence_deco', unlockStage: 2, renderType: 'wood_fence', name: '원목 피켓 울타리 파티션', icon: '🚧', baseCost: 3100, max: 5, desc: '테라스 품격 상승으로 전체 수익 +8% 증가', wx: 520, wy: 210, profitBonus: 0.08, speedBonus: 0 },
-      { id: 'chalk_sign_stand', unlockStage: 2, renderType: 'chalk_stand', name: '우드 프레임 칠판 메뉴보드', icon: '🪧', baseCost: 3800, max: 5, desc: '손님 입장 속도 및 전체 수익 +9% 증가', wx: 105, wy: 390, profitBonus: 0.09, speedBonus: 0.02 },
-      { id: 'bakery_rack', unlockStage: 2, renderType: 'bakery_rack', name: '갓 구운 원목 베이커리 진열장', icon: '🥐', baseCost: 4600, max: 5, desc: '브런치·베이커리 향기로 전체 수익 +11% 증가', wx: 720, wy: 210, profitBonus: 0.11, speedBonus: 0 },
-      { id: 'tea_samovar', unlockStage: 2, renderType: 'tea_table', name: '클래식 원목 티테이블 & 다기 세트', icon: '🫖', baseCost: 5500, max: 5, desc: '조리 및 서빙 속도 +6% 증가', wx: 860, wy: 540, profitBonus: 0.06, speedBonus: 0.06 },
-      { id: 'wall_clock_deco', unlockStage: 2, renderType: 'pendulum_clock', name: '앤티크 원목 괘종시계', icon: '🕰️', baseCost: 6800, max: 5, desc: '오프라인 수익 효율 및 전체 수익 +12% 증가', wx: 960, wy: 210, profitBonus: 0.12, speedBonus: 0.03 },
-      { id: 'book_shelf', unlockStage: 2, renderType: 'bookshelf', name: '햇살 원목 북카페 책장', icon: '📚', baseCost: 8200, max: 5, desc: '아늑한 분위기로 팁 금액 및 전체 수익 +14% 증가', wx: 540, wy: 555, profitBonus: 0.14, speedBonus: 0 },
+      { id: 'red_sofa_booth', unlockStage: 2, renderType: 'sofa_table_set', name: '레드벨벳 2인 소파 & 티테이블', icon: '🛋️', baseCost: 2200, max: 5, desc: '전체 메뉴 수익 +10% 증가 (아이소메트릭 소파 & 원목 테이블 세트)', wx: 115, wy: 350, profitBonus: 0.10, speedBonus: 0 },
+      { id: 'flower_bush_pot', unlockStage: 2, renderType: 'flower_pot', name: '노란 꽃송이 덤불 화분', icon: '🌼', baseCost: 2600, max: 5, desc: '직원 이동 속도 +5% 증가 (둥근 2톤 손그림 꽃화분)', wx: 176, wy: 176, profitBonus: 0.04, speedBonus: 0.05 },
+      { id: 'wood_fence_deco', unlockStage: 2, renderType: 'wood_fence', name: '원목 피켓 울타리 파티션', icon: '🚧', baseCost: 3100, max: 5, desc: '테라스 품격 상승으로 전체 수익 +8% 증가', wx: 242, wy: 176, profitBonus: 0.08, speedBonus: 0 },
+      { id: 'chalk_sign_stand', unlockStage: 2, renderType: 'chalk_stand', name: '우드 프레임 칠판 메뉴보드', icon: '🪧', baseCost: 3800, max: 5, desc: '손님 입장 속도 및 전체 수익 +9% 증가', wx: 72, wy: 271, profitBonus: 0.09, speedBonus: 0.02 },
+      { id: 'bakery_rack', unlockStage: 2, renderType: 'bakery_rack', name: '갓 구운 원목 베이커리 진열장', icon: '🥐', baseCost: 4600, max: 5, desc: '브런치·베이커리 향기로 전체 수익 +11% 증가', wx: 324, wy: 176, profitBonus: 0.11, speedBonus: 0 },
+      { id: 'tea_samovar', unlockStage: 2, renderType: 'tea_table', name: '클래식 원목 티테이블 & 다기 세트', icon: '🫖', baseCost: 5500, max: 5, desc: '조리 및 서빙 속도 +6% 증가', wx: 381, wy: 350, profitBonus: 0.06, speedBonus: 0.06 },
+      { id: 'wall_clock_deco', unlockStage: 2, renderType: 'pendulum_clock', name: '앤티크 원목 괘종시계', icon: '🕰️', baseCost: 6800, max: 5, desc: '오프라인 수익 효율 및 전체 수익 +12% 증가', wx: 422, wy: 176, profitBonus: 0.12, speedBonus: 0.03 },
+      { id: 'book_shelf', unlockStage: 2, renderType: 'bookshelf', name: '햇살 원목 북카페 책장', icon: '📚', baseCost: 8200, max: 5, desc: '아늑한 분위기로 팁 금액 및 전체 수익 +14% 증가', wx: 250, wy: 358, profitBonus: 0.14, speedBonus: 0 },
 
       // ==================== Stage 3 전용 설비 (10종: 미슐랭 고양이 레스토랑) ====================
-      { id: 'wine_cellar', unlockStage: 3, renderType: 'wine_rack', name: '빈티지 오크통 와인 셀러', icon: '🍷', baseCost: 25000, max: 5, desc: '고급 주류 페어링으로 전체 수익 +15% 증가', wx: 165, wy: 210, profitBonus: 0.15, speedBonus: 0 },
-      { id: 's3_chandelier', unlockStage: 3, renderType: 'candelabra_stand', name: '크리스탈 3구 황금 촛대 스탠드', icon: '🕯️', baseCost: 34000, max: 5, desc: '미슐랭 다이닝 조명으로 전체 수익 +16% 증가', wx: 340, wy: 210, profitBonus: 0.16, speedBonus: 0.03 },
-      { id: 's3_grand_piano', unlockStage: 3, renderType: 'gramophone', name: '클래식 황동 나팔 축음기', icon: '🎻', baseCost: 46000, max: 5, desc: '우아한 클래식 선율로 식사 및 서빙 속도 +7% 증가', wx: 520, wy: 210, profitBonus: 0.12, speedBonus: 0.07 },
-      { id: 's3_cheese_cart', unlockStage: 3, renderType: 'serving_cart', name: '숙성 트러플 & 치즈 서빙 카트', icon: '🧀', baseCost: 62000, max: 5, desc: '테이블사이드 서비스로 전체 수익 +18% 증가', wx: 720, wy: 210, profitBonus: 0.18, speedBonus: 0 },
-      { id: 's3_velvet_div', unlockStage: 3, renderType: 'red_sofa_3seat', name: '로얄 벨벳 3인용 대기 소파', icon: '🛋️', baseCost: 85000, max: 5, desc: 'VIP 손님 만족도 및 전체 수익 +18% 증가', wx: 910, wy: 210, profitBonus: 0.18, speedBonus: 0.04 },
-      { id: 's3_gold_tree', unlockStage: 3, renderType: 'sprout_pot', name: '허브 화분 & 로즈 토피어리', icon: '🌹', baseCost: 115000, max: 5, desc: '향기로운 허브 장식으로 직원 이동 속도 +6% 증가', wx: 180, wy: 545, profitBonus: 0.14, speedBonus: 0.06 },
-      { id: 's3_lobster_tank', unlockStage: 3, renderType: 'aquarium', name: '최상급 블루 랍스터 수조', icon: '🦞', baseCost: 155000, max: 5, desc: '신선한 해산물 수조로 전체 수익 +20% 증가', wx: 390, wy: 545, profitBonus: 0.20, speedBonus: 0 },
-      { id: 's3_star_plaque', unlockStage: 3, renderType: 'chalk_stand', name: '미슐랭 3스타 우드 메뉴보드', icon: '⭐', baseCost: 210000, max: 5, desc: '명성 효과로 손님 입장 및 전체 수익 +21% 증가', wx: 600, wy: 545, profitBonus: 0.21, speedBonus: 0.05 },
-      { id: 's3_sommelier_bar', unlockStage: 3, renderType: 'espresso', name: '소믈리에 디캔팅 카운터', icon: '🍾', baseCost: 280000, max: 5, desc: '음료 준비 속도 +8% 및 전체 수익 +22% 증가', wx: 810, wy: 545, profitBonus: 0.22, speedBonus: 0.08 },
-      { id: 's3_aging_cabinet', unlockStage: 3, renderType: 'showcase', name: '드라이에이징 스테이크 숙성고', icon: '🥩', baseCost: 375000, max: 5, desc: '최상급 육류 숙성으로 전체 수익 +24% 증가', wx: 1000, wy: 545, profitBonus: 0.24, speedBonus: 0 },
+      { id: 'wine_cellar', unlockStage: 3, renderType: 'wine_rack', name: '빈티지 오크통 와인 셀러', icon: '🍷', baseCost: 25000, max: 5, desc: '고급 주류 페어링으로 전체 수익 +15% 증가', wx: 97, wy: 176, profitBonus: 0.15, speedBonus: 0 },
+      { id: 's3_chandelier', unlockStage: 3, renderType: 'candelabra_stand', name: '크리스탈 3구 황금 촛대 스탠드', icon: '🕯️', baseCost: 34000, max: 5, desc: '미슐랭 다이닝 조명으로 전체 수익 +16% 증가', wx: 168, wy: 176, profitBonus: 0.16, speedBonus: 0.03 },
+      { id: 's3_grand_piano', unlockStage: 3, renderType: 'gramophone', name: '클래식 황동 나팔 축음기', icon: '🎻', baseCost: 46000, max: 5, desc: '우아한 클래식 선율로 식사 및 서빙 속도 +7% 증가', wx: 242, wy: 176, profitBonus: 0.12, speedBonus: 0.07 },
+      { id: 's3_cheese_cart', unlockStage: 3, renderType: 'serving_cart', name: '숙성 트러플 & 치즈 서빙 카트', icon: '🧀', baseCost: 62000, max: 5, desc: '테이블사이드 서비스로 전체 수익 +18% 증가', wx: 324, wy: 176, profitBonus: 0.18, speedBonus: 0 },
+      { id: 's3_velvet_div', unlockStage: 3, renderType: 'red_sofa_3seat', name: '로얄 벨벳 3인용 대기 소파', icon: '🛋️', baseCost: 85000, max: 5, desc: 'VIP 손님 만족도 및 전체 수익 +18% 증가', wx: 402, wy: 176, profitBonus: 0.18, speedBonus: 0.04 },
+      { id: 's3_gold_tree', unlockStage: 3, renderType: 'sprout_pot', name: '허브 화분 & 로즈 토피어리', icon: '🌹', baseCost: 115000, max: 5, desc: '향기로운 허브 장식으로 직원 이동 속도 +6% 증가', wx: 103, wy: 353, profitBonus: 0.14, speedBonus: 0.06 },
+      { id: 's3_lobster_tank', unlockStage: 3, renderType: 'aquarium', name: '최상급 블루 랍스터 수조', icon: '🦞', baseCost: 155000, max: 5, desc: '신선한 해산물 수조로 전체 수익 +20% 증가', wx: 189, wy: 353, profitBonus: 0.20, speedBonus: 0 },
+      { id: 's3_star_plaque', unlockStage: 3, renderType: 'chalk_stand', name: '미슐랭 3스타 우드 메뉴보드', icon: '⭐', baseCost: 210000, max: 5, desc: '명성 효과로 손님 입장 및 전체 수익 +21% 증가', wx: 275, wy: 353, profitBonus: 0.21, speedBonus: 0.05 },
+      { id: 's3_sommelier_bar', unlockStage: 3, renderType: 'espresso', name: '소믈리에 디캔팅 카운터', icon: '🍾', baseCost: 280000, max: 5, desc: '음료 준비 속도 +8% 및 전체 수익 +22% 증가', wx: 361, wy: 353, profitBonus: 0.22, speedBonus: 0.08 },
+      { id: 's3_aging_cabinet', unlockStage: 3, renderType: 'showcase', name: '드라이에이징 스테이크 숙성고', icon: '🥩', baseCost: 375000, max: 5, desc: '최상급 육류 숙성으로 전체 수익 +24% 증가', wx: 439, wy: 353, profitBonus: 0.24, speedBonus: 0 },
 
       // ==================== Stage 4 전용 설비 (12종: 벚꽃 정원 다실) ====================
-      { id: 'sakura_bonsai', unlockStage: 4, renderType: 'sakura_tree', name: '분홍 벚꽃 분재 화분', icon: '🌸', baseCost: 120000, max: 5, desc: '화사한 벚꽃 향기로 전체 수익 +18% & 속도 +5% 증가', wx: 160, wy: 210, profitBonus: 0.18, speedBonus: 0.05 },
-      { id: 's4_tea_hearth', unlockStage: 4, renderType: 'fireplace', name: '전통 무쇠 다도 차가마 화로', icon: '🍵', baseCost: 165000, max: 5, desc: '깊은 말차 향으로 조리 속도 +8% & 수익 +16% 증가', wx: 320, wy: 210, profitBonus: 0.16, speedBonus: 0.08 },
-      { id: 's4_bamboo_fence', unlockStage: 4, renderType: 'wood_fence', name: '청죽 대나무 정원 울타리', icon: '🎋', baseCost: 220000, max: 5, desc: '고즈넉한 정원 분위기로 전체 수익 +18% 증가', wx: 480, wy: 210, profitBonus: 0.18, speedBonus: 0 },
-      { id: 's4_dango_stand', unlockStage: 4, renderType: 'bakery_rack', name: '삼색 꽃경단 화과자 찬합장', icon: '🍡', baseCost: 300000, max: 5, desc: '전통 다과 진열로 전체 수익 +20% 증가', wx: 640, wy: 210, profitBonus: 0.20, speedBonus: 0 },
-      { id: 's4_lantern', unlockStage: 4, renderType: 'stone_lantern', name: '화강암 전통 정원 석등', icon: '🏮', baseCost: 410000, max: 5, desc: '은은한 정원 불빛으로 전체 수익 +21% 증가', wx: 800, wy: 210, profitBonus: 0.21, speedBonus: 0.04 },
-      { id: 's4_koi_pond', unlockStage: 4, renderType: 'aquarium', name: '비단잉어 미니 연못 수조', icon: '🐠', baseCost: 560000, max: 5, desc: '행운의 비단잉어로 팁 및 전체 수익 +22% 증가', wx: 960, wy: 210, profitBonus: 0.22, speedBonus: 0 },
-      { id: 's4_tatami_bench', unlockStage: 4, renderType: 'sofa_table_set', name: '붉은 모단 다실 좌석 & 다탁', icon: '🛋️', baseCost: 760000, max: 5, desc: '다실 귀빈용 좌석으로 전체 수익 +23% 증가', wx: 170, wy: 545, profitBonus: 0.23, speedBonus: 0.05 },
-      { id: 's4_sake_barrel', unlockStage: 4, renderType: 'barrel_cask', name: '전통 삼나무 사케 술통 장식', icon: '🍶', baseCost: 1020000, max: 5, desc: '명주 숙성 향기로 전체 수익 +24% 증가', wx: 350, wy: 545, profitBonus: 0.24, speedBonus: 0 },
-      { id: 's4_koto_harp', unlockStage: 4, renderType: 'harp_statue', name: '전통 현악기 고토 스탠드', icon: '🎶', baseCost: 1380000, max: 5, desc: '우아한 전통 가락으로 서빙 속도 +8% & 수익 +24% 증가', wx: 530, wy: 545, profitBonus: 0.24, speedBonus: 0.08 },
-      { id: 's4_scroll_rack', unlockStage: 4, renderType: 'bookshelf', name: '수묵화 두루마리 & 다도 서고', icon: '📜', baseCost: 1850000, max: 5, desc: '전통 다도 비법으로 전체 수익 +26% 증가', wx: 710, wy: 545, profitBonus: 0.26, speedBonus: 0.05 },
-      { id: 's4_matcha_table', unlockStage: 4, renderType: 'tea_table', name: '우지 말차 다완 & 다선 탁자', icon: '🍵', baseCost: 2480000, max: 5, desc: '정성스러운 다도 시연으로 전체 수익 +27% 증가', wx: 890, wy: 545, profitBonus: 0.27, speedBonus: 0.06 },
-      { id: 's4_camellia_pot', unlockStage: 4, renderType: 'flower_pot', name: '동백꽃 정원 덤불 화분', icon: '🌺', baseCost: 3300000, max: 5, desc: '사계절 꽃향기로 전체 수익 +29% 증가', wx: 105, wy: 390, profitBonus: 0.29, speedBonus: 0.06 },
+      { id: 'sakura_bonsai', unlockStage: 4, renderType: 'sakura_tree', name: '분홍 벚꽃 분재 화분', icon: '🌸', baseCost: 120000, max: 5, desc: '화사한 벚꽃 향기로 전체 수익 +18% & 속도 +5% 증가', wx: 95, wy: 176, profitBonus: 0.18, speedBonus: 0.05 },
+      { id: 's4_tea_hearth', unlockStage: 4, renderType: 'fireplace', name: '전통 무쇠 다도 차가마 화로', icon: '🍵', baseCost: 165000, max: 5, desc: '깊은 말차 향으로 조리 속도 +8% & 수익 +16% 증가', wx: 160, wy: 176, profitBonus: 0.16, speedBonus: 0.08 },
+      { id: 's4_bamboo_fence', unlockStage: 4, renderType: 'wood_fence', name: '청죽 대나무 정원 울타리', icon: '🎋', baseCost: 220000, max: 5, desc: '고즈넉한 정원 분위기로 전체 수익 +18% 증가', wx: 226, wy: 176, profitBonus: 0.18, speedBonus: 0 },
+      { id: 's4_dango_stand', unlockStage: 4, renderType: 'bakery_rack', name: '삼색 꽃경단 화과자 찬합장', icon: '🍡', baseCost: 300000, max: 5, desc: '전통 다과 진열로 전체 수익 +20% 증가', wx: 291, wy: 176, profitBonus: 0.20, speedBonus: 0 },
+      { id: 's4_lantern', unlockStage: 4, renderType: 'stone_lantern', name: '화강암 전통 정원 석등', icon: '🏮', baseCost: 410000, max: 5, desc: '은은한 정원 불빛으로 전체 수익 +21% 증가', wx: 357, wy: 176, profitBonus: 0.21, speedBonus: 0.04 },
+      { id: 's4_koi_pond', unlockStage: 4, renderType: 'aquarium', name: '비단잉어 미니 연못 수조', icon: '🐠', baseCost: 560000, max: 5, desc: '행운의 비단잉어로 팁 및 전체 수익 +22% 증가', wx: 422, wy: 176, profitBonus: 0.22, speedBonus: 0 },
+      { id: 's4_tatami_bench', unlockStage: 4, renderType: 'sofa_table_set', name: '붉은 모단 다실 좌석 & 다탁', icon: '🛋️', baseCost: 760000, max: 5, desc: '다실 귀빈용 좌석으로 전체 수익 +23% 증가', wx: 99, wy: 353, profitBonus: 0.23, speedBonus: 0.05 },
+      { id: 's4_sake_barrel', unlockStage: 4, renderType: 'barrel_cask', name: '전통 삼나무 사케 술통 장식', icon: '🍶', baseCost: 1020000, max: 5, desc: '명주 숙성 향기로 전체 수익 +24% 증가', wx: 172, wy: 353, profitBonus: 0.24, speedBonus: 0 },
+      { id: 's4_koto_harp', unlockStage: 4, renderType: 'harp_statue', name: '전통 현악기 고토 스탠드', icon: '🎶', baseCost: 1380000, max: 5, desc: '우아한 전통 가락으로 서빙 속도 +8% & 수익 +24% 증가', wx: 246, wy: 353, profitBonus: 0.24, speedBonus: 0.08 },
+      { id: 's4_scroll_rack', unlockStage: 4, renderType: 'bookshelf', name: '수묵화 두루마리 & 다도 서고', icon: '📜', baseCost: 1850000, max: 5, desc: '전통 다도 비법으로 전체 수익 +26% 증가', wx: 320, wy: 353, profitBonus: 0.26, speedBonus: 0.05 },
+      { id: 's4_matcha_table', unlockStage: 4, renderType: 'tea_table', name: '우지 말차 다완 & 다선 탁자', icon: '🍵', baseCost: 2480000, max: 5, desc: '정성스러운 다도 시연으로 전체 수익 +27% 증가', wx: 394, wy: 353, profitBonus: 0.27, speedBonus: 0.06 },
+      { id: 's4_camellia_pot', unlockStage: 4, renderType: 'flower_pot', name: '동백꽃 정원 덤불 화분', icon: '🌺', baseCost: 3300000, max: 5, desc: '사계절 꽃향기로 전체 수익 +29% 증가', wx: 72, wy: 271, profitBonus: 0.29, speedBonus: 0.06 },
 
       // ==================== Stage 5 전용 설비 (14종: 에메랄드 오션 비치 바) ====================
-      { id: 'surf_rack', unlockStage: 5, renderType: 'surfboard', name: '트로피컬 서핑보드 스탠드', icon: '🏄', baseCost: 650000, max: 5, desc: '시원한 해변 무드로 전체 수익 +20% & 속도 +6% 증가', wx: 150, wy: 210, profitBonus: 0.20, speedBonus: 0.06 },
-      { id: 's5_palm_pot', unlockStage: 5, renderType: 'leafy_plant', name: '하와이안 코코넛 야자 화분', icon: '🌴', baseCost: 880000, max: 5, desc: '야자수 그늘 효과로 전체 수익 +21% 증가', wx: 290, wy: 210, profitBonus: 0.21, speedBonus: 0.04 },
-      { id: 's5_tiki_totem', unlockStage: 5, renderType: 'stone_lantern', name: '알로하 원목 티키 토템 기둥', icon: '🗿', baseCost: 1200000, max: 5, desc: '해변의 수호신 효과로 전체 수익 +22% 증가', wx: 430, wy: 210, profitBonus: 0.22, speedBonus: 0 },
-      { id: 's5_juice_blender', unlockStage: 5, renderType: 'espresso', name: '트로피컬 생과일 칵테일 바', icon: '🍹', baseCost: 1650000, max: 5, desc: '상큼한 음료 제조로 조리 속도 +8% & 수익 +22% 증가', wx: 570, wy: 210, profitBonus: 0.22, speedBonus: 0.08 },
-      { id: 's5_gelato_case', unlockStage: 5, renderType: 'showcase', name: '열대과일 젤라또 쇼케이스', icon: '🍧', baseCost: 2250000, max: 5, desc: '달콤한 해변 디저트로 전체 수익 +24% 증가', wx: 710, wy: 210, profitBonus: 0.24, speedBonus: 0 },
-      { id: 's5_coral_reef', unlockStage: 5, renderType: 'aquarium', name: '산호초 열대어 대형 수족관', icon: '🐠', baseCost: 3100000, max: 5, desc: '에메랄드빛 산호 수조로 전체 수익 +25% 증가', wx: 850, wy: 210, profitBonus: 0.25, speedBonus: 0 },
-      { id: 's5_cabana_bed', unlockStage: 5, renderType: 'red_sofa', name: '오션뷰 리조트 선베드 소파', icon: '🏖️', baseCost: 4200000, max: 5, desc: '고급 휴양지 좌석으로 전체 수익 +26% 증가', wx: 990, wy: 210, profitBonus: 0.26, speedBonus: 0.05 },
-      { id: 's5_bbq_grill', unlockStage: 5, renderType: 'fireplace', name: '해변 직화 바비큐 그릴 화덕', icon: '🍢', baseCost: 5800000, max: 5, desc: '바비큐 불향으로 조리 속도 +9% & 수익 +26% 증가', wx: 150, wy: 545, profitBonus: 0.26, speedBonus: 0.09 },
-      { id: 's5_ukulele_box', unlockStage: 5, renderType: 'jukebox', name: '하와이안 비치 주크박스', icon: '🎸', baseCost: 7900000, max: 5, desc: '경쾌한 해변 음악으로 전체 수익 +27% 증가', wx: 300, wy: 545, profitBonus: 0.27, speedBonus: 0.06 },
-      { id: 's5_shell_arch', unlockStage: 5, renderType: 'harp_statue', name: '산호 & 진주 하프 조형물', icon: '🐚', baseCost: 10800000, max: 5, desc: '인기 포토존 효과로 VIP 및 전체 수익 +28% 증가', wx: 450, wy: 545, profitBonus: 0.28, speedBonus: 0 },
-      { id: 's5_yacht_wheel', unlockStage: 5, renderType: 'chalk_stand', name: '비치 클럽 칠판 입간판', icon: '⚓', baseCost: 14500000, max: 5, desc: '럭셔리 요트 클럽 품격으로 전체 수익 +29% 증가', wx: 600, wy: 545, profitBonus: 0.29, speedBonus: 0.05 },
-      { id: 's5_rum_barrel', unlockStage: 5, renderType: 'barrel_cask', name: '캐리비안 오크 럼주 배럴', icon: '🛢️', baseCost: 19500000, max: 5, desc: '숙성 트로피컬 칵테일로 전체 수익 +30% 증가', wx: 750, wy: 545, profitBonus: 0.30, speedBonus: 0 },
-      { id: 's5_hibiscus_pot', unlockStage: 5, renderType: 'flower_pot', name: '트로피컬 히비스커스 꽃화분', icon: '🌺', baseCost: 26000000, max: 5, desc: '열대 꽃향기로 전체 수익 +31% 증가', wx: 900, wy: 545, profitBonus: 0.31, speedBonus: 0.06 },
-      { id: 's5_driftwood_fence', unlockStage: 5, renderType: 'wood_fence', name: '해변 유목 테라스 펜스', icon: '🚧', baseCost: 35000000, max: 5, desc: '해변 라운지 경계 장식으로 전체 수익 +33% 증가', wx: 105, wy: 390, profitBonus: 0.33, speedBonus: 0.06 },
+      { id: 'surf_rack', unlockStage: 5, renderType: 'surfboard', name: '트로피컬 서핑보드 스탠드', icon: '🏄', baseCost: 650000, max: 5, desc: '시원한 해변 무드로 전체 수익 +20% & 속도 +6% 증가', wx: 90, wy: 176, profitBonus: 0.20, speedBonus: 0.06 },
+      { id: 's5_palm_pot', unlockStage: 5, renderType: 'leafy_plant', name: '하와이안 코코넛 야자 화분', icon: '🌴', baseCost: 880000, max: 5, desc: '야자수 그늘 효과로 전체 수익 +21% 증가', wx: 148, wy: 176, profitBonus: 0.21, speedBonus: 0.04 },
+      { id: 's5_tiki_totem', unlockStage: 5, renderType: 'stone_lantern', name: '알로하 원목 티키 토템 기둥', icon: '🗿', baseCost: 1200000, max: 5, desc: '해변의 수호신 효과로 전체 수익 +22% 증가', wx: 205, wy: 176, profitBonus: 0.22, speedBonus: 0 },
+      { id: 's5_juice_blender', unlockStage: 5, renderType: 'espresso', name: '트로피컬 생과일 칵테일 바', icon: '🍹', baseCost: 1650000, max: 5, desc: '상큼한 음료 제조로 조리 속도 +8% & 수익 +22% 증가', wx: 262, wy: 176, profitBonus: 0.22, speedBonus: 0.08 },
+      { id: 's5_gelato_case', unlockStage: 5, renderType: 'showcase', name: '열대과일 젤라또 쇼케이스', icon: '🍧', baseCost: 2250000, max: 5, desc: '달콤한 해변 디저트로 전체 수익 +24% 증가', wx: 320, wy: 176, profitBonus: 0.24, speedBonus: 0 },
+      { id: 's5_coral_reef', unlockStage: 5, renderType: 'aquarium', name: '산호초 열대어 대형 수족관', icon: '🐠', baseCost: 3100000, max: 5, desc: '에메랄드빛 산호 수조로 전체 수익 +25% 증가', wx: 377, wy: 176, profitBonus: 0.25, speedBonus: 0 },
+      { id: 's5_cabana_bed', unlockStage: 5, renderType: 'red_sofa', name: '오션뷰 리조트 선베드 소파', icon: '🏖️', baseCost: 4200000, max: 5, desc: '고급 휴양지 좌석으로 전체 수익 +26% 증가', wx: 435, wy: 176, profitBonus: 0.26, speedBonus: 0.05 },
+      { id: 's5_bbq_grill', unlockStage: 5, renderType: 'fireplace', name: '해변 직화 바비큐 그릴 화덕', icon: '🍢', baseCost: 5800000, max: 5, desc: '바비큐 불향으로 조리 속도 +9% & 수익 +26% 증가', wx: 90, wy: 353, profitBonus: 0.26, speedBonus: 0.09 },
+      { id: 's5_ukulele_box', unlockStage: 5, renderType: 'jukebox', name: '하와이안 비치 주크박스', icon: '🎸', baseCost: 7900000, max: 5, desc: '경쾌한 해변 음악으로 전체 수익 +27% 증가', wx: 152, wy: 353, profitBonus: 0.27, speedBonus: 0.06 },
+      { id: 's5_shell_arch', unlockStage: 5, renderType: 'harp_statue', name: '산호 & 진주 하프 조형물', icon: '🐚', baseCost: 10800000, max: 5, desc: '인기 포토존 효과로 VIP 및 전체 수익 +28% 증가', wx: 213, wy: 353, profitBonus: 0.28, speedBonus: 0 },
+      { id: 's5_yacht_wheel', unlockStage: 5, renderType: 'chalk_stand', name: '비치 클럽 칠판 입간판', icon: '⚓', baseCost: 14500000, max: 5, desc: '럭셔리 요트 클럽 품격으로 전체 수익 +29% 증가', wx: 275, wy: 353, profitBonus: 0.29, speedBonus: 0.05 },
+      { id: 's5_rum_barrel', unlockStage: 5, renderType: 'barrel_cask', name: '캐리비안 오크 럼주 배럴', icon: '🛢️', baseCost: 19500000, max: 5, desc: '숙성 트로피컬 칵테일로 전체 수익 +30% 증가', wx: 336, wy: 353, profitBonus: 0.30, speedBonus: 0 },
+      { id: 's5_hibiscus_pot', unlockStage: 5, renderType: 'flower_pot', name: '트로피컬 히비스커스 꽃화분', icon: '🌺', baseCost: 26000000, max: 5, desc: '열대 꽃향기로 전체 수익 +31% 증가', wx: 398, wy: 353, profitBonus: 0.31, speedBonus: 0.06 },
+      { id: 's5_driftwood_fence', unlockStage: 5, renderType: 'wood_fence', name: '해변 유목 테라스 펜스', icon: '🚧', baseCost: 35000000, max: 5, desc: '해변 라운지 경계 장식으로 전체 수익 +33% 증가', wx: 72, wy: 271, profitBonus: 0.33, speedBonus: 0.06 },
 
       // ==================== Stage 6 전용 설비 (16종: 마법의 숲 통나무 베이커리) ====================
-      { id: 'brick_oven', unlockStage: 6, renderType: 'fireplace', name: '붉은 벽돌 장작 화덕', icon: '🔥', baseCost: 4200000, max: 5, desc: '따뜻한 화덕 열기로 전체 수익 +24% & 조리 속도 +8% 증가', wx: 150, wy: 210, profitBonus: 0.24, speedBonus: 0.08 },
-      { id: 's6_glow_shroom', unlockStage: 6, renderType: 'flower_pot', name: '발광 요정버섯 덤불 화분', icon: '🍄', baseCost: 5800000, max: 5, desc: '신비로운 버섯 불빛으로 전체 수익 +25% 증가', wx: 280, wy: 210, profitBonus: 0.25, speedBonus: 0.05 },
-      { id: 's6_bread_basket', unlockStage: 6, renderType: 'bakery_rack', name: '통나무 화덕 빵 진열장', icon: '🥖', baseCost: 8000000, max: 5, desc: '갓 구운 깜빠뉴 향기로 전체 수익 +26% 증가', wx: 410, wy: 210, profitBonus: 0.26, speedBonus: 0 },
-      { id: 's6_honey_barrel', unlockStage: 6, renderType: 'barrel_cask', name: '황금 로얄젤리 꿀 오크통', icon: '🍯', baseCost: 11000000, max: 5, desc: '달콤한 숲속 꿀 향기로 전체 수익 +27% 증가', wx: 540, wy: 210, profitBonus: 0.27, speedBonus: 0 },
-      { id: 's6_herb_pot', unlockStage: 6, renderType: 'leafy_plant', name: '연금술사 마법 허브 화분', icon: '🌿', baseCost: 15000000, max: 5, desc: '싱그러운 허브 아로마로 직원 속도 +7% & 수익 +26% 증가', wx: 670, wy: 210, profitBonus: 0.26, speedBonus: 0.07 },
-      { id: 's6_cuckoo_clock', unlockStage: 6, renderType: 'pendulum_clock', name: '통나무 숲 괘종시계', icon: '🦉', baseCost: 20500000, max: 5, desc: '정각 숲속 종소리로 전체 수익 +28% 증가', wx: 800, wy: 210, profitBonus: 0.28, speedBonus: 0.05 },
-      { id: 's6_moss_sofa', unlockStage: 6, renderType: 'sofa_table_set', name: '통나무 숲 벨벳 소파 & 티테이블', icon: '🛋️', baseCost: 28000000, max: 5, desc: '포근한 숲속 휴식처로 전체 수익 +29% 증가', wx: 940, wy: 210, profitBonus: 0.29, speedBonus: 0 },
-      { id: 's6_spell_books', unlockStage: 6, renderType: 'bookshelf', name: '고대 레시피 마도서 책장', icon: '📗', baseCost: 38000000, max: 5, desc: '전설의 제빵 비법으로 전체 수익 +30% 증가', wx: 150, wy: 545, profitBonus: 0.30, speedBonus: 0.06 },
-      { id: 's6_fairy_fountain', unlockStage: 6, renderType: 'aquarium', name: '요정의 샘물 크리스탈 수조', icon: '⛲', baseCost: 52000000, max: 5, desc: '맑은 샘물 기운으로 전체 수익 +31% 증가', wx: 290, wy: 545, profitBonus: 0.31, speedBonus: 0 },
-      { id: 's6_pie_warmer', unlockStage: 6, renderType: 'showcase', name: '호두 파이 온장 쇼케이스', icon: '🥧', baseCost: 71000000, max: 5, desc: '따끈한 파이 진열로 전체 수익 +32% 증가', wx: 430, wy: 545, profitBonus: 0.32, speedBonus: 0 },
-      { id: 's6_music_box', unlockStage: 6, renderType: 'gramophone', name: '태엽 오르골 나팔 축음기', icon: '🎵', baseCost: 96000000, max: 5, desc: '오르골 선율로 손님 만족도 및 수익 +33% 증가', wx: 570, wy: 545, profitBonus: 0.33, speedBonus: 0.07 },
-      { id: 's6_elven_harp', unlockStage: 6, renderType: 'harp_statue', name: '세계수 나뭇가지 하프', icon: '🌳', baseCost: 130000000, max: 5, desc: '숲의 축복으로 전체 수익 +34% & 속도 +7% 증가', wx: 710, wy: 545, profitBonus: 0.34, speedBonus: 0.07 },
-      { id: 's6_sprout_planter', unlockStage: 6, renderType: 'sprout_pot', name: '세계수 새싹 화분', icon: '🌱', baseCost: 175000000, max: 5, desc: '생명력 넘치는 새싹으로 전체 수익 +35% 증가', wx: 850, wy: 545, profitBonus: 0.35, speedBonus: 0.05 },
-      { id: 's6_forest_fence', unlockStage: 6, renderType: 'wood_fence', name: '통나무 피켓 울타리', icon: '🚧', baseCost: 235000000, max: 5, desc: '아늑한 오두막 울타리로 전체 수익 +36% 증가', wx: 990, wy: 545, profitBonus: 0.36, speedBonus: 0 },
-      { id: 's6_crystal_orb', unlockStage: 6, renderType: 'planet_globe', name: '대마법사 숲의 수정구슬 스탠드', icon: '🔮', baseCost: 315000000, max: 5, desc: '마력 증폭으로 전체 수익 +37% 증가', wx: 105, wy: 390, profitBonus: 0.37, speedBonus: 0.08 },
-      { id: 's6_potion_cart', unlockStage: 6, renderType: 'serving_cart', name: '엘릭서 허브차 서빙 트롤리', icon: '🧪', baseCost: 420000000, max: 5, desc: '신속한 티타임 서빙으로 전체 수익 +39% 증가', wx: 1040, wy: 390, profitBonus: 0.39, speedBonus: 0.08 },
+      { id: 'brick_oven', unlockStage: 6, renderType: 'fireplace', name: '붉은 벽돌 장작 화덕', icon: '🔥', baseCost: 4200000, max: 5, desc: '따뜻한 화덕 열기로 전체 수익 +24% & 조리 속도 +8% 증가', wx: 90, wy: 176, profitBonus: 0.24, speedBonus: 0.08 },
+      { id: 's6_glow_shroom', unlockStage: 6, renderType: 'flower_pot', name: '발광 요정버섯 덤불 화분', icon: '🍄', baseCost: 5800000, max: 5, desc: '신비로운 버섯 불빛으로 전체 수익 +25% 증가', wx: 144, wy: 176, profitBonus: 0.25, speedBonus: 0.05 },
+      { id: 's6_bread_basket', unlockStage: 6, renderType: 'bakery_rack', name: '통나무 화덕 빵 진열장', icon: '🥖', baseCost: 8000000, max: 5, desc: '갓 구운 깜빠뉴 향기로 전체 수익 +26% 증가', wx: 197, wy: 176, profitBonus: 0.26, speedBonus: 0 },
+      { id: 's6_honey_barrel', unlockStage: 6, renderType: 'barrel_cask', name: '황금 로얄젤리 꿀 오크통', icon: '🍯', baseCost: 11000000, max: 5, desc: '달콤한 숲속 꿀 향기로 전체 수익 +27% 증가', wx: 250, wy: 176, profitBonus: 0.27, speedBonus: 0 },
+      { id: 's6_herb_pot', unlockStage: 6, renderType: 'leafy_plant', name: '연금술사 마법 허브 화분', icon: '🌿', baseCost: 15000000, max: 5, desc: '싱그러운 허브 아로마로 직원 속도 +7% & 수익 +26% 증가', wx: 303, wy: 176, profitBonus: 0.26, speedBonus: 0.07 },
+      { id: 's6_cuckoo_clock', unlockStage: 6, renderType: 'pendulum_clock', name: '통나무 숲 괘종시계', icon: '🦉', baseCost: 20500000, max: 5, desc: '정각 숲속 종소리로 전체 수익 +28% 증가', wx: 357, wy: 176, profitBonus: 0.28, speedBonus: 0.05 },
+      { id: 's6_moss_sofa', unlockStage: 6, renderType: 'sofa_table_set', name: '통나무 숲 벨벳 소파 & 티테이블', icon: '🛋️', baseCost: 28000000, max: 5, desc: '포근한 숲속 휴식처로 전체 수익 +29% 증가', wx: 414, wy: 176, profitBonus: 0.29, speedBonus: 0 },
+      { id: 's6_spell_books', unlockStage: 6, renderType: 'bookshelf', name: '고대 레시피 마도서 책장', icon: '📗', baseCost: 38000000, max: 5, desc: '전설의 제빵 비법으로 전체 수익 +30% 증가', wx: 90, wy: 353, profitBonus: 0.30, speedBonus: 0.06 },
+      { id: 's6_fairy_fountain', unlockStage: 6, renderType: 'aquarium', name: '요정의 샘물 크리스탈 수조', icon: '⛲', baseCost: 52000000, max: 5, desc: '맑은 샘물 기운으로 전체 수익 +31% 증가', wx: 148, wy: 353, profitBonus: 0.31, speedBonus: 0 },
+      { id: 's6_pie_warmer', unlockStage: 6, renderType: 'showcase', name: '호두 파이 온장 쇼케이스', icon: '🥧', baseCost: 71000000, max: 5, desc: '따끈한 파이 진열로 전체 수익 +32% 증가', wx: 205, wy: 353, profitBonus: 0.32, speedBonus: 0 },
+      { id: 's6_music_box', unlockStage: 6, renderType: 'gramophone', name: '태엽 오르골 나팔 축음기', icon: '🎵', baseCost: 96000000, max: 5, desc: '오르골 선율로 손님 만족도 및 수익 +33% 증가', wx: 262, wy: 353, profitBonus: 0.33, speedBonus: 0.07 },
+      { id: 's6_elven_harp', unlockStage: 6, renderType: 'harp_statue', name: '세계수 나뭇가지 하프', icon: '🌳', baseCost: 130000000, max: 5, desc: '숲의 축복으로 전체 수익 +34% & 속도 +7% 증가', wx: 320, wy: 353, profitBonus: 0.34, speedBonus: 0.07 },
+      { id: 's6_sprout_planter', unlockStage: 6, renderType: 'sprout_pot', name: '세계수 새싹 화분', icon: '🌱', baseCost: 175000000, max: 5, desc: '생명력 넘치는 새싹으로 전체 수익 +35% 증가', wx: 377, wy: 353, profitBonus: 0.35, speedBonus: 0.05 },
+      { id: 's6_forest_fence', unlockStage: 6, renderType: 'wood_fence', name: '통나무 피켓 울타리', icon: '🚧', baseCost: 235000000, max: 5, desc: '아늑한 오두막 울타리로 전체 수익 +36% 증가', wx: 435, wy: 353, profitBonus: 0.36, speedBonus: 0 },
+      { id: 's6_crystal_orb', unlockStage: 6, renderType: 'planet_globe', name: '대마법사 숲의 수정구슬 스탠드', icon: '🔮', baseCost: 315000000, max: 5, desc: '마력 증폭으로 전체 수익 +37% 증가', wx: 72, wy: 271, profitBonus: 0.37, speedBonus: 0.08 },
+      { id: 's6_potion_cart', unlockStage: 6, renderType: 'serving_cart', name: '엘릭서 허브차 서빙 트롤리', icon: '🧪', baseCost: 420000000, max: 5, desc: '신속한 티타임 서빙으로 전체 수익 +39% 증가', wx: 455, wy: 271, profitBonus: 0.39, speedBonus: 0.08 },
 
       // ==================== Stage 7 전용 설비 (18종: 스팀펑크 기차역 다이닝 카) ====================
-      { id: 'brass_phonograph', unlockStage: 7, renderType: 'gramophone', name: '황동 나팔 축음기', icon: '🎺', baseCost: 28000000, max: 5, desc: '고전적인 선율로 전체 수익 +26% & 속도 +5% 증가', wx: 140, wy: 210, profitBonus: 0.26, speedBonus: 0.05 },
-      { id: 's7_steam_boiler', unlockStage: 7, renderType: 'espresso', name: '고압 황동 증기 에스프레소 머신', icon: '⚙️', baseCost: 39000000, max: 5, desc: '증기 터빈 동력으로 조리 속도 +9% & 수익 +27% 증가', wx: 260, wy: 210, profitBonus: 0.27, speedBonus: 0.09 },
-      { id: 's7_gear_clock', unlockStage: 7, renderType: 'pendulum_clock', name: '태엽 톱니바퀴 역전 괘종시계', icon: '🕰️', baseCost: 54000000, max: 5, desc: '정밀한 열차 시각표로 전체 수익 +28% 증가', wx: 380, wy: 210, profitBonus: 0.28, speedBonus: 0.06 },
-      { id: 's7_luggage_rack', unlockStage: 7, renderType: 'bakery_rack', name: '1등석 원목 베이커리 & 다과 선반', icon: '🧳', baseCost: 75000000, max: 5, desc: '1등석 여행객 서비스로 전체 수익 +29% 증가', wx: 500, wy: 210, profitBonus: 0.29, speedBonus: 0 },
-      { id: 's7_choco_case', unlockStage: 7, renderType: 'showcase', name: '벨기에 쇼콜라 유리 진열장', icon: '🍫', baseCost: 105000000, max: 5, desc: '수제 초콜릿 디저트로 전체 수익 +30% 증가', wx: 620, wy: 210, profitBonus: 0.30, speedBonus: 0 },
-      { id: 's7_whisky_cask', unlockStage: 7, renderType: 'wine_rack', name: '식당칸 오크통 위스키 셀러', icon: '🥃', baseCost: 145000000, max: 5, desc: '깊은 몰트 향기로 전체 수익 +31% 증가', wx: 740, wy: 210, profitBonus: 0.31, speedBonus: 0 },
-      { id: 's7_leather_booth', unlockStage: 7, renderType: 'sofa_table_set', name: '오리엔트 특급 가죽 소파 & 테이블', icon: '🛋️', baseCost: 200000000, max: 5, desc: '최고급 객실 좌석으로 전체 수익 +32% 증가', wx: 860, wy: 210, profitBonus: 0.32, speedBonus: 0.05 },
-      { id: 's7_coal_stove', unlockStage: 7, renderType: 'fireplace', name: '무쇠 주물 증기기관 화덕', icon: '🔥', baseCost: 275000000, max: 5, desc: '설산 열차의 온기로 전체 수익 +33% & 속도 +7% 증가', wx: 980, wy: 210, profitBonus: 0.33, speedBonus: 0.07 },
-      { id: 's7_telegraph', unlockStage: 7, renderType: 'chalk_stand', name: '기차역 플랫폼 시간표 보드', icon: '🪧', baseCost: 380000000, max: 5, desc: '초고속 주문 안내로 서빙 속도 +7% & 수익 +34% 증가', wx: 140, wy: 545, profitBonus: 0.34, speedBonus: 0.07 },
-      { id: 's7_brass_fence', unlockStage: 7, renderType: 'wood_fence', name: '다이닝 카 원목 & 황동 파티션', icon: '🚧', baseCost: 520000000, max: 5, desc: '스팀펑크 인테리어로 전체 수익 +35% 증가', wx: 260, wy: 545, profitBonus: 0.35, speedBonus: 0 },
-      { id: 's7_nautilus_tank', unlockStage: 7, renderType: 'aquarium', name: '노틸러스호 황동 프레임 수조', icon: '🐙', baseCost: 720000000, max: 5, desc: '신비한 심해 수조로 전체 수익 +36% 증가', wx: 380, wy: 545, profitBonus: 0.36, speedBonus: 0 },
-      { id: 's7_globe_bar', unlockStage: 7, renderType: 'planet_globe', name: '앤티크 황동 세계지도 지구본', icon: '🧭', baseCost: 990000000, max: 5, desc: '세계일주 테마 효과로 전체 수익 +37% 증가', wx: 500, wy: 545, profitBonus: 0.37, speedBonus: 0.06 },
-      { id: 's7_steam_organ', unlockStage: 7, renderType: 'jukebox', name: '증기 파이프 오르간 주크박스', icon: '🎹', baseCost: 1350000000, max: 5, desc: '웅장한 증기 오르간으로 전체 수익 +38% 증가', wx: 620, wy: 545, profitBonus: 0.38, speedBonus: 0.07 },
-      { id: 's7_tea_trolley', unlockStage: 7, renderType: 'serving_cart', name: '1등석 애프터눈 티 서빙 카트', icon: '🫖', baseCost: 1850000000, max: 5, desc: '객실 내 이동식 다과 서비스로 수익 +39% 증가', wx: 740, wy: 545, profitBonus: 0.39, speedBonus: 0.08 },
-      { id: 's7_velvet_couch', unlockStage: 7, renderType: 'red_sofa_3seat', name: '기관장실 3인용 클래식 소파', icon: '🛋️', baseCost: 2500000000, max: 5, desc: 'VIP 승객 전용 휴게석으로 전체 수익 +40% 증가', wx: 860, wy: 545, profitBonus: 0.40, speedBonus: 0 },
-      { id: 's7_gas_lamp', unlockStage: 7, renderType: 'candelabra_stand', name: '빅토리아 황동 촛대 스탠드', icon: '🕯️', baseCost: 3400000000, max: 5, desc: '고풍스러운 객실 조명으로 전체 수익 +41% 증가', wx: 980, wy: 545, profitBonus: 0.41, speedBonus: 0.06 },
-      { id: 's7_travel_books', unlockStage: 7, renderType: 'bookshelf', name: '대륙횡단 철도 여행기 책장', icon: '📚', baseCost: 4600000000, max: 5, desc: '낭만적인 독서 공간으로 전체 수익 +42% 증가', wx: 105, wy: 390, profitBonus: 0.42, speedBonus: 0.06 },
-      { id: 's7_malt_barrel', unlockStage: 7, renderType: 'barrel_cask', name: '스팀 에이징 오크 배럴', icon: '🛢️', baseCost: 6200000000, max: 5, desc: '특급 열차 시그니처 숙성통으로 전체 수익 +44% 증가', wx: 1040, wy: 390, profitBonus: 0.44, speedBonus: 0.08 },
+      { id: 'brass_phonograph', unlockStage: 7, renderType: 'gramophone', name: '황동 나팔 축음기', icon: '🎺', baseCost: 28000000, max: 5, desc: '고전적인 선율로 전체 수익 +26% & 속도 +5% 증가', wx: 86, wy: 176, profitBonus: 0.26, speedBonus: 0.05 },
+      { id: 's7_steam_boiler', unlockStage: 7, renderType: 'espresso', name: '고압 황동 증기 에스프레소 머신', icon: '⚙️', baseCost: 39000000, max: 5, desc: '증기 터빈 동력으로 조리 속도 +9% & 수익 +27% 증가', wx: 135, wy: 176, profitBonus: 0.27, speedBonus: 0.09 },
+      { id: 's7_gear_clock', unlockStage: 7, renderType: 'pendulum_clock', name: '태엽 톱니바퀴 역전 괘종시계', icon: '🕰️', baseCost: 54000000, max: 5, desc: '정밀한 열차 시각표로 전체 수익 +28% 증가', wx: 185, wy: 176, profitBonus: 0.28, speedBonus: 0.06 },
+      { id: 's7_luggage_rack', unlockStage: 7, renderType: 'bakery_rack', name: '1등석 원목 베이커리 & 다과 선반', icon: '🧳', baseCost: 75000000, max: 5, desc: '1등석 여행객 서비스로 전체 수익 +29% 증가', wx: 234, wy: 176, profitBonus: 0.29, speedBonus: 0 },
+      { id: 's7_choco_case', unlockStage: 7, renderType: 'showcase', name: '벨기에 쇼콜라 유리 진열장', icon: '🍫', baseCost: 105000000, max: 5, desc: '수제 초콜릿 디저트로 전체 수익 +30% 증가', wx: 283, wy: 176, profitBonus: 0.30, speedBonus: 0 },
+      { id: 's7_whisky_cask', unlockStage: 7, renderType: 'wine_rack', name: '식당칸 오크통 위스키 셀러', icon: '🥃', baseCost: 145000000, max: 5, desc: '깊은 몰트 향기로 전체 수익 +31% 증가', wx: 332, wy: 176, profitBonus: 0.31, speedBonus: 0 },
+      { id: 's7_leather_booth', unlockStage: 7, renderType: 'sofa_table_set', name: '오리엔트 특급 가죽 소파 & 테이블', icon: '🛋️', baseCost: 200000000, max: 5, desc: '최고급 객실 좌석으로 전체 수익 +32% 증가', wx: 381, wy: 176, profitBonus: 0.32, speedBonus: 0.05 },
+      { id: 's7_coal_stove', unlockStage: 7, renderType: 'fireplace', name: '무쇠 주물 증기기관 화덕', icon: '🔥', baseCost: 275000000, max: 5, desc: '설산 열차의 온기로 전체 수익 +33% & 속도 +7% 증가', wx: 430, wy: 176, profitBonus: 0.33, speedBonus: 0.07 },
+      { id: 's7_telegraph', unlockStage: 7, renderType: 'chalk_stand', name: '기차역 플랫폼 시간표 보드', icon: '🪧', baseCost: 380000000, max: 5, desc: '초고속 주문 안내로 서빙 속도 +7% & 수익 +34% 증가', wx: 86, wy: 353, profitBonus: 0.34, speedBonus: 0.07 },
+      { id: 's7_brass_fence', unlockStage: 7, renderType: 'wood_fence', name: '다이닝 카 원목 & 황동 파티션', icon: '🚧', baseCost: 520000000, max: 5, desc: '스팀펑크 인테리어로 전체 수익 +35% 증가', wx: 135, wy: 353, profitBonus: 0.35, speedBonus: 0 },
+      { id: 's7_nautilus_tank', unlockStage: 7, renderType: 'aquarium', name: '노틸러스호 황동 프레임 수조', icon: '🐙', baseCost: 720000000, max: 5, desc: '신비한 심해 수조로 전체 수익 +36% 증가', wx: 185, wy: 353, profitBonus: 0.36, speedBonus: 0 },
+      { id: 's7_globe_bar', unlockStage: 7, renderType: 'planet_globe', name: '앤티크 황동 세계지도 지구본', icon: '🧭', baseCost: 990000000, max: 5, desc: '세계일주 테마 효과로 전체 수익 +37% 증가', wx: 234, wy: 353, profitBonus: 0.37, speedBonus: 0.06 },
+      { id: 's7_steam_organ', unlockStage: 7, renderType: 'jukebox', name: '증기 파이프 오르간 주크박스', icon: '🎹', baseCost: 1350000000, max: 5, desc: '웅장한 증기 오르간으로 전체 수익 +38% 증가', wx: 283, wy: 353, profitBonus: 0.38, speedBonus: 0.07 },
+      { id: 's7_tea_trolley', unlockStage: 7, renderType: 'serving_cart', name: '1등석 애프터눈 티 서빙 카트', icon: '🫖', baseCost: 1850000000, max: 5, desc: '객실 내 이동식 다과 서비스로 수익 +39% 증가', wx: 332, wy: 353, profitBonus: 0.39, speedBonus: 0.08 },
+      { id: 's7_velvet_couch', unlockStage: 7, renderType: 'red_sofa_3seat', name: '기관장실 3인용 클래식 소파', icon: '🛋️', baseCost: 2500000000, max: 5, desc: 'VIP 승객 전용 휴게석으로 전체 수익 +40% 증가', wx: 381, wy: 353, profitBonus: 0.40, speedBonus: 0 },
+      { id: 's7_gas_lamp', unlockStage: 7, renderType: 'candelabra_stand', name: '빅토리아 황동 촛대 스탠드', icon: '🕯️', baseCost: 3400000000, max: 5, desc: '고풍스러운 객실 조명으로 전체 수익 +41% 증가', wx: 430, wy: 353, profitBonus: 0.41, speedBonus: 0.06 },
+      { id: 's7_travel_books', unlockStage: 7, renderType: 'bookshelf', name: '대륙횡단 철도 여행기 책장', icon: '📚', baseCost: 4600000000, max: 5, desc: '낭만적인 독서 공간으로 전체 수익 +42% 증가', wx: 72, wy: 271, profitBonus: 0.42, speedBonus: 0.06 },
+      { id: 's7_malt_barrel', unlockStage: 7, renderType: 'barrel_cask', name: '스팀 에이징 오크 배럴', icon: '🛢️', baseCost: 6200000000, max: 5, desc: '특급 열차 시그니처 숙성통으로 전체 수익 +44% 증가', wx: 455, wy: 271, profitBonus: 0.44, speedBonus: 0.08 },
 
       // ==================== Stage 8 전용 설비 (20종: 사이버 네온 루프탑 라운지) ====================
-      { id: 'neon_arcade', unlockStage: 8, renderType: 'arcade_machine', name: '레트로 네온 아케이드 오락기', icon: '🕹️', baseCost: 190000000, max: 5, desc: '손님 만족도 폭발로 전체 수익 +30% & 속도 +7% 증가', wx: 135, wy: 210, profitBonus: 0.30, speedBonus: 0.07 },
-      { id: 's8_dj_booth', unlockStage: 8, renderType: 'jukebox', name: '사이버 홀로그램 주크박스', icon: '🎧', baseCost: 260000000, max: 5, desc: '일렉트로닉 비트로 직원 속도 +8% & 수익 +30% 증가', wx: 245, wy: 210, profitBonus: 0.30, speedBonus: 0.08 },
-      { id: 's8_plasma_bar', unlockStage: 8, renderType: 'espresso', name: '네온 플라즈마 음료 추출기', icon: '🧪', baseCost: 360000000, max: 5, desc: '자동 분자요리 추출로 조리 속도 +9% & 수익 +31% 증가', wx: 355, wy: 210, profitBonus: 0.31, speedBonus: 0.09 },
-      { id: 's8_cyber_sign', unlockStage: 8, renderType: 'chalk_stand', name: '루프탑 라운지 블랙 메뉴보드', icon: '⚡', baseCost: 500000000, max: 5, desc: '감각적인 메뉴 안내로 전체 수익 +32% 증가', wx: 465, wy: 210, profitBonus: 0.32, speedBonus: 0.05 },
-      { id: 's8_holo_menu', unlockStage: 8, renderType: 'showcase', name: '네온 글래스 디저트 쇼케이스', icon: '🍨', baseCost: 690000000, max: 5, desc: '미래형 쇼케이스로 전체 수익 +33% 증가', wx: 575, wy: 210, profitBonus: 0.33, speedBonus: 0 },
-      { id: 's8_led_palm', unlockStage: 8, renderType: 'leafy_plant', name: '루프탑 테라스 몬스테라 화분', icon: '🌴', baseCost: 950000000, max: 5, desc: '도심 속 가든 식물로 전체 수익 +34% 증가', wx: 685, wy: 210, profitBonus: 0.34, speedBonus: 0.06 },
-      { id: 's8_jelly_tank', unlockStage: 8, renderType: 'aquarium', name: '발광 네온 해파리 아쿠아리움', icon: '🪼', baseCost: 1300000000, max: 5, desc: '몽환적인 수조 조명으로 전체 수익 +35% 증가', wx: 795, wy: 210, profitBonus: 0.35, speedBonus: 0 },
-      { id: 's8_neon_sofa', unlockStage: 8, renderType: 'sofa_table_set', name: '루프탑 VIP 소파 & 라운지 테이블', icon: '🛋️', baseCost: 1800000000, max: 5, desc: '루프탑 VIP 부스로 전체 수익 +36% 증가', wx: 905, wy: 210, profitBonus: 0.36, speedBonus: 0 },
-      { id: 's8_laser_fence', unlockStage: 8, renderType: 'wood_fence', name: '루프탑 테라스 우드 파티션', icon: '🚧', baseCost: 2500000000, max: 5, desc: '프라이빗 라운지 구획으로 전체 수익 +37% 증가', wx: 1015, wy: 210, profitBonus: 0.37, speedBonus: 0.05 },
-      { id: 's8_cyber_cat_tower', unlockStage: 8, renderType: 'cat_tower', name: '펜트하우스 원목 캣타워', icon: '🛸', baseCost: 3450000000, max: 5, desc: '고층 전망 캣타워로 VIP 확률 및 전체 수익 +38% 증가', wx: 135, wy: 545, profitBonus: 0.38, speedBonus: 0 },
-      { id: 's8_energy_core', unlockStage: 8, renderType: 'planet_globe', name: '사이버 홀로그램 지구본 스탠드', icon: '🔮', baseCost: 4750000000, max: 5, desc: '미래 도시 오브제로 전체 수익 +39% & 속도 +7% 증가', wx: 245, wy: 545, profitBonus: 0.39, speedBonus: 0.07 },
-      { id: 's8_synth_harp', unlockStage: 8, renderType: 'harp_statue', name: '어쿠스틱 골드 하프 조형물', icon: '🎹', baseCost: 6500000000, max: 5, desc: '루프탑 라이브 연주로 전체 수익 +40% 증가', wx: 355, wy: 545, profitBonus: 0.40, speedBonus: 0.07 },
-      { id: 's8_data_rack', unlockStage: 8, renderType: 'bookshelf', name: '디자인 아트북 라운지 서가', icon: '💻', baseCost: 8900000000, max: 5, desc: '트렌디한 라운지 문고로 전체 수익 +41% 증가', wx: 465, wy: 545, profitBonus: 0.41, speedBonus: 0.06 },
-      { id: 's8_drone_pad', unlockStage: 8, renderType: 'tea_table', name: '루프탑 칵테일 사이드 테이블', icon: '🍸', baseCost: 12200000000, max: 5, desc: '야경 칵테일 테이블로 전체 수익 +42% 증가', wx: 575, wy: 545, profitBonus: 0.42, speedBonus: 0.08 },
-      { id: 's8_lounge_couch', unlockStage: 8, renderType: 'red_sofa_3seat', name: '스카이라인 3인용 라운지 소파', icon: '🛋️', baseCost: 16800000000, max: 5, desc: '단체 루프탑 고객 유치로 전체 수익 +43% 증가', wx: 685, wy: 545, profitBonus: 0.43, speedBonus: 0 },
-      { id: 's8_bottle_cart', unlockStage: 8, renderType: 'serving_cart', name: '샴페인 보틀 서빙 트롤리', icon: '🍾', baseCost: 23000000000, max: 5, desc: '테이블 보틀 서비스로 전체 수익 +44% & 속도 +8% 증가', wx: 795, wy: 545, profitBonus: 0.44, speedBonus: 0.08 },
-      { id: 's8_rooftop_flower', unlockStage: 8, renderType: 'flower_pot', name: '루프탑 가든 꽃덤불 화분', icon: '🌼', baseCost: 31500000000, max: 5, desc: '야경 정원 화분으로 전체 수익 +45% 증가', wx: 905, wy: 545, profitBonus: 0.45, speedBonus: 0.06 },
-      { id: 's8_wine_wall', unlockStage: 8, renderType: 'wine_rack', name: '루프탑 프리미엄 와인 랙', icon: '🍷', baseCost: 43000000000, max: 5, desc: '소믈리에 엄선 셀러로 전체 수익 +46% 증가', wx: 1015, wy: 545, profitBonus: 0.46, speedBonus: 0 },
-      { id: 's8_fire_pit', unlockStage: 8, renderType: 'fireplace', name: '루프탑 불멍 파이어핏 화덕', icon: '🔥', baseCost: 59000000000, max: 5, desc: '낭만적인 모닥불 화덕으로 전체 수익 +48% 증가', wx: 105, wy: 390, profitBonus: 0.48, speedBonus: 0.09 },
-      { id: 's8_retro_clock', unlockStage: 8, renderType: 'pendulum_clock', name: '미드나잇 카운트다운 시계탑', icon: '🕰️', baseCost: 80000000000, max: 5, desc: '루프탑 랜드마크 시계로 전체 수익 +50% 증가', wx: 1040, wy: 390, profitBonus: 0.50, speedBonus: 0.09 },
+      { id: 'neon_arcade', unlockStage: 8, renderType: 'arcade_machine', name: '레트로 네온 아케이드 오락기', icon: '🕹️', baseCost: 190000000, max: 5, desc: '손님 만족도 폭발로 전체 수익 +30% & 속도 +7% 증가', wx: 84, wy: 176, profitBonus: 0.30, speedBonus: 0.07 },
+      { id: 's8_dj_booth', unlockStage: 8, renderType: 'jukebox', name: '사이버 홀로그램 주크박스', icon: '🎧', baseCost: 260000000, max: 5, desc: '일렉트로닉 비트로 직원 속도 +8% & 수익 +30% 증가', wx: 129, wy: 176, profitBonus: 0.30, speedBonus: 0.08 },
+      { id: 's8_plasma_bar', unlockStage: 8, renderType: 'espresso', name: '네온 플라즈마 음료 추출기', icon: '🧪', baseCost: 360000000, max: 5, desc: '자동 분자요리 추출로 조리 속도 +9% & 수익 +31% 증가', wx: 174, wy: 176, profitBonus: 0.31, speedBonus: 0.09 },
+      { id: 's8_cyber_sign', unlockStage: 8, renderType: 'chalk_stand', name: '루프탑 라운지 블랙 메뉴보드', icon: '⚡', baseCost: 500000000, max: 5, desc: '감각적인 메뉴 안내로 전체 수익 +32% 증가', wx: 219, wy: 176, profitBonus: 0.32, speedBonus: 0.05 },
+      { id: 's8_holo_menu', unlockStage: 8, renderType: 'showcase', name: '네온 글래스 디저트 쇼케이스', icon: '🍨', baseCost: 690000000, max: 5, desc: '미래형 쇼케이스로 전체 수익 +33% 증가', wx: 265, wy: 176, profitBonus: 0.33, speedBonus: 0 },
+      { id: 's8_led_palm', unlockStage: 8, renderType: 'leafy_plant', name: '루프탑 테라스 몬스테라 화분', icon: '🌴', baseCost: 950000000, max: 5, desc: '도심 속 가든 식물로 전체 수익 +34% 증가', wx: 310, wy: 176, profitBonus: 0.34, speedBonus: 0.06 },
+      { id: 's8_jelly_tank', unlockStage: 8, renderType: 'aquarium', name: '발광 네온 해파리 아쿠아리움', icon: '🪼', baseCost: 1300000000, max: 5, desc: '몽환적인 수조 조명으로 전체 수익 +35% 증가', wx: 355, wy: 176, profitBonus: 0.35, speedBonus: 0 },
+      { id: 's8_neon_sofa', unlockStage: 8, renderType: 'sofa_table_set', name: '루프탑 VIP 소파 & 라운지 테이블', icon: '🛋️', baseCost: 1800000000, max: 5, desc: '루프탑 VIP 부스로 전체 수익 +36% 증가', wx: 400, wy: 176, profitBonus: 0.36, speedBonus: 0 },
+      { id: 's8_laser_fence', unlockStage: 8, renderType: 'wood_fence', name: '루프탑 테라스 우드 파티션', icon: '🚧', baseCost: 2500000000, max: 5, desc: '프라이빗 라운지 구획으로 전체 수익 +37% 증가', wx: 445, wy: 176, profitBonus: 0.37, speedBonus: 0.05 },
+      { id: 's8_cyber_cat_tower', unlockStage: 8, renderType: 'cat_tower', name: '펜트하우스 원목 캣타워', icon: '🛸', baseCost: 3450000000, max: 5, desc: '고층 전망 캣타워로 VIP 확률 및 전체 수익 +38% 증가', wx: 84, wy: 353, profitBonus: 0.38, speedBonus: 0 },
+      { id: 's8_energy_core', unlockStage: 8, renderType: 'planet_globe', name: '사이버 홀로그램 지구본 스탠드', icon: '🔮', baseCost: 4750000000, max: 5, desc: '미래 도시 오브제로 전체 수익 +39% & 속도 +7% 증가', wx: 129, wy: 353, profitBonus: 0.39, speedBonus: 0.07 },
+      { id: 's8_synth_harp', unlockStage: 8, renderType: 'harp_statue', name: '어쿠스틱 골드 하프 조형물', icon: '🎹', baseCost: 6500000000, max: 5, desc: '루프탑 라이브 연주로 전체 수익 +40% 증가', wx: 174, wy: 353, profitBonus: 0.40, speedBonus: 0.07 },
+      { id: 's8_data_rack', unlockStage: 8, renderType: 'bookshelf', name: '디자인 아트북 라운지 서가', icon: '💻', baseCost: 8900000000, max: 5, desc: '트렌디한 라운지 문고로 전체 수익 +41% 증가', wx: 219, wy: 353, profitBonus: 0.41, speedBonus: 0.06 },
+      { id: 's8_drone_pad', unlockStage: 8, renderType: 'tea_table', name: '루프탑 칵테일 사이드 테이블', icon: '🍸', baseCost: 12200000000, max: 5, desc: '야경 칵테일 테이블로 전체 수익 +42% 증가', wx: 265, wy: 353, profitBonus: 0.42, speedBonus: 0.08 },
+      { id: 's8_lounge_couch', unlockStage: 8, renderType: 'red_sofa_3seat', name: '스카이라인 3인용 라운지 소파', icon: '🛋️', baseCost: 16800000000, max: 5, desc: '단체 루프탑 고객 유치로 전체 수익 +43% 증가', wx: 310, wy: 353, profitBonus: 0.43, speedBonus: 0 },
+      { id: 's8_bottle_cart', unlockStage: 8, renderType: 'serving_cart', name: '샴페인 보틀 서빙 트롤리', icon: '🍾', baseCost: 23000000000, max: 5, desc: '테이블 보틀 서비스로 전체 수익 +44% & 속도 +8% 증가', wx: 355, wy: 353, profitBonus: 0.44, speedBonus: 0.08 },
+      { id: 's8_rooftop_flower', unlockStage: 8, renderType: 'flower_pot', name: '루프탑 가든 꽃덤불 화분', icon: '🌼', baseCost: 31500000000, max: 5, desc: '야경 정원 화분으로 전체 수익 +45% 증가', wx: 400, wy: 353, profitBonus: 0.45, speedBonus: 0.06 },
+      { id: 's8_wine_wall', unlockStage: 8, renderType: 'wine_rack', name: '루프탑 프리미엄 와인 랙', icon: '🍷', baseCost: 43000000000, max: 5, desc: '소믈리에 엄선 셀러로 전체 수익 +46% 증가', wx: 445, wy: 353, profitBonus: 0.46, speedBonus: 0 },
+      { id: 's8_fire_pit', unlockStage: 8, renderType: 'fireplace', name: '루프탑 불멍 파이어핏 화덕', icon: '🔥', baseCost: 59000000000, max: 5, desc: '낭만적인 모닥불 화덕으로 전체 수익 +48% 증가', wx: 72, wy: 271, profitBonus: 0.48, speedBonus: 0.09 },
+      { id: 's8_retro_clock', unlockStage: 8, renderType: 'pendulum_clock', name: '미드나잇 카운트다운 시계탑', icon: '🕰️', baseCost: 80000000000, max: 5, desc: '루프탑 랜드마크 시계로 전체 수익 +50% 증가', wx: 455, wy: 271, profitBonus: 0.50, speedBonus: 0.09 },
 
       // ==================== Stage 9 전용 설비 (22종: 구름 위 천공 궁전 연회장) ====================
-      { id: 'golden_harp', unlockStage: 9, renderType: 'harp_statue', name: '천상의 황금 하프 스탠드', icon: '🎵', baseCost: 1400000000, max: 5, desc: '신비로운 천상의 연주로 전체 수익 +35% & 속도 +8% 증가', wx: 130, wy: 210, profitBonus: 0.35, speedBonus: 0.08 },
-      { id: 's9_marble_pillar', unlockStage: 9, renderType: 'stone_lantern', name: '천공 대신전 석조 등롱 기둥', icon: '🏛️', baseCost: 1950000000, max: 5, desc: '천공 대신전의 위엄으로 전체 수익 +36% 증가', wx: 230, wy: 210, profitBonus: 0.36, speedBonus: 0 },
-      { id: 's9_ambrosia_fountain', unlockStage: 9, renderType: 'aquarium', name: '넥타르 성수 크리스탈 수조', icon: '⛲', baseCost: 2700000000, max: 5, desc: '신들의 샘물 수조로 전체 수익 +37% 증가', wx: 330, wy: 210, profitBonus: 0.37, speedBonus: 0.05 },
-      { id: 's9_macaron_tower', unlockStage: 9, renderType: 'showcase', name: '순금박 웨딩 케이크 쇼케이스', icon: '🎂', baseCost: 3750000000, max: 5, desc: '황실 연회 디저트로 전체 수익 +38% 증가', wx: 430, wy: 210, profitBonus: 0.38, speedBonus: 0 },
-      { id: 's9_cloud_sofa', unlockStage: 9, renderType: 'sofa_table_set', name: '황실 연회장 소파 & 티테이블 세트', icon: '👑', baseCost: 5200000000, max: 5, desc: '구름처럼 폭신한 연회 좌석으로 전체 수익 +39% 증가', wx: 530, wy: 210, profitBonus: 0.39, speedBonus: 0.06 },
-      { id: 's9_laurel_tree', unlockStage: 9, renderType: 'flower_pot', name: '헤스페리데스 황금꽃 화분', icon: '🌼', baseCost: 7200000000, max: 5, desc: '신성한 정원 꽃화분으로 전체 수익 +40% 증가', wx: 630, wy: 210, profitBonus: 0.40, speedBonus: 0.06 },
-      { id: 's9_sun_brazier', unlockStage: 9, renderType: 'fireplace', name: '태양신 아폴론 성화 화덕', icon: '🔥', baseCost: 9900000000, max: 5, desc: '꺼지지 않는 성화로 조리 속도 +9% & 수익 +41% 증가', wx: 730, wy: 210, profitBonus: 0.41, speedBonus: 0.09 },
-      { id: 's9_angel_statue_deco', unlockStage: 9, renderType: 'cat_tower', name: '천공 궁전 로얄 캣타워', icon: '🪽', baseCost: 13800000000, max: 5, desc: '천사의 축복으로 VIP 및 전체 수익 +42% 증가', wx: 830, wy: 210, profitBonus: 0.42, speedBonus: 0 },
-      { id: 's9_royal_tea_set', unlockStage: 9, renderType: 'tea_table', name: '황실 다과회 원형 티테이블', icon: '🫖', baseCost: 19000000000, max: 5, desc: '천상계 다과 서비스로 전체 수익 +43% 증가', wx: 930, wy: 210, profitBonus: 0.43, speedBonus: 0.07 },
-      { id: 's9_celestial_globe', unlockStage: 9, renderType: 'planet_globe', name: '황도 12궁 황금 천구의', icon: '🌟', baseCost: 26500000000, max: 5, desc: '별자리의 가호로 전체 수익 +44% 증가', wx: 1030, wy: 210, profitBonus: 0.44, speedBonus: 0.07 },
-      { id: 's9_nectar_cellar', unlockStage: 9, renderType: 'wine_rack', name: '올림포스 신주(神酒) 와인 셀러', icon: '🍷', baseCost: 36500000000, max: 5, desc: '천상의 빈티지 와인으로 전체 수익 +45% 증가', wx: 130, wy: 545, profitBonus: 0.45, speedBonus: 0 },
-      { id: 's9_gold_gate', unlockStage: 9, renderType: 'wood_fence', name: '천공 정원 원목 테라스 난간', icon: '🚧', baseCost: 50500000000, max: 5, desc: '구름 정원 난간으로 전체 수익 +46% 증가', wx: 230, wy: 545, profitBonus: 0.46, speedBonus: 0 },
-      { id: 's9_prophecy_books', unlockStage: 9, renderType: 'bookshelf', name: '신성한 황금 양피지 서고', icon: '📜', baseCost: 70000000000, max: 5, desc: '신들의 만찬 기록으로 전체 수익 +47% 증가', wx: 330, wy: 545, profitBonus: 0.47, speedBonus: 0.07 },
-      { id: 's9_cherub_gram', unlockStage: 9, renderType: 'gramophone', name: '천사의 나팔 황금 축음기', icon: '🎺', baseCost: 96000000000, max: 5, desc: '팡파르 울림으로 전체 수익 +48% & 속도 +8% 증가', wx: 430, wy: 545, profitBonus: 0.48, speedBonus: 0.08 },
-      { id: 's9_halo_stand', unlockStage: 9, renderType: 'chalk_stand', name: '연회장 만찬 메뉴 보드', icon: '🌈', baseCost: 132000000000, max: 5, desc: '연회 코스 안내로 전체 수익 +49% 증가', wx: 530, wy: 545, profitBonus: 0.49, speedBonus: 0.06 },
-      { id: 's9_palace_couch', unlockStage: 9, renderType: 'red_sofa_3seat', name: '황제 전용 3인용 벨벳 소파', icon: '🛋️', baseCost: 182000000000, max: 5, desc: '최고급 연회석으로 전체 수익 +50% 증가', wx: 630, wy: 545, profitBonus: 0.50, speedBonus: 0 },
-      { id: 's9_gold_candelabra', unlockStage: 9, renderType: 'candelabra_stand', name: '대신전 황금 촛대 스탠드', icon: '🕯️', baseCost: 250000000000, max: 5, desc: '성스러운 촛불 조명으로 전체 수익 +51% 증가', wx: 730, wy: 545, profitBonus: 0.51, speedBonus: 0.07 },
-      { id: 's9_feast_trolley', unlockStage: 9, renderType: 'serving_cart', name: '황금 성배 만찬 서빙 카트', icon: '🍽️', baseCost: 345000000000, max: 5, desc: '황실 전담 서빙 카트로 전체 수익 +52% & 속도 +9% 증가', wx: 830, wy: 545, profitBonus: 0.52, speedBonus: 0.09 },
-      { id: 's9_olive_pot', unlockStage: 9, renderType: 'leafy_plant', name: '올림포스 월계수 & 올리브 화분', icon: '🌿', baseCost: 475000000000, max: 5, desc: '평화와 풍요의 나무로 전체 수익 +53% 증가', wx: 930, wy: 545, profitBonus: 0.53, speedBonus: 0.06 },
-      { id: 's9_eternal_clock', unlockStage: 9, renderType: 'pendulum_clock', name: '크로노스 영원의 괘종시계', icon: '🕰️', baseCost: 655000000000, max: 5, desc: '시간의 신 축복으로 오프라인 및 전체 수익 +54% 증가', wx: 1030, wy: 545, profitBonus: 0.54, speedBonus: 0.08 },
-      { id: 's9_ambrosia_cask', unlockStage: 9, renderType: 'barrel_cask', name: '황금 넥타르 숙성 오크통', icon: '🍯', baseCost: 900000000000, max: 5, desc: '신들의 비주 숙성으로 전체 수익 +56% 증가', wx: 105, wy: 390, profitBonus: 0.56, speedBonus: 0 },
-      { id: 's9_bakery_altar', unlockStage: 9, renderType: 'bakery_rack', name: '천상의 성찬 브레드 진열대', icon: '🥐', baseCost: 1250000000000, max: 5, desc: '황금빛 브레드 진열로 전체 수익 +58% 증가', wx: 1040, wy: 390, profitBonus: 0.58, speedBonus: 0.09 },
+      { id: 'golden_harp', unlockStage: 9, renderType: 'harp_statue', name: '천상의 황금 하프 스탠드', icon: '🎵', baseCost: 1400000000, max: 5, desc: '신비로운 천상의 연주로 전체 수익 +35% & 속도 +8% 증가', wx: 82, wy: 176, profitBonus: 0.35, speedBonus: 0.08 },
+      { id: 's9_marble_pillar', unlockStage: 9, renderType: 'stone_lantern', name: '천공 대신전 석조 등롱 기둥', icon: '🏛️', baseCost: 1950000000, max: 5, desc: '천공 대신전의 위엄으로 전체 수익 +36% 증가', wx: 123, wy: 176, profitBonus: 0.36, speedBonus: 0 },
+      { id: 's9_ambrosia_fountain', unlockStage: 9, renderType: 'aquarium', name: '넥타르 성수 크리스탈 수조', icon: '⛲', baseCost: 2700000000, max: 5, desc: '신들의 샘물 수조로 전체 수익 +37% 증가', wx: 164, wy: 176, profitBonus: 0.37, speedBonus: 0.05 },
+      { id: 's9_macaron_tower', unlockStage: 9, renderType: 'showcase', name: '순금박 웨딩 케이크 쇼케이스', icon: '🎂', baseCost: 3750000000, max: 5, desc: '황실 연회 디저트로 전체 수익 +38% 증가', wx: 205, wy: 176, profitBonus: 0.38, speedBonus: 0 },
+      { id: 's9_cloud_sofa', unlockStage: 9, renderType: 'sofa_table_set', name: '황실 연회장 소파 & 티테이블 세트', icon: '👑', baseCost: 5200000000, max: 5, desc: '구름처럼 폭신한 연회 좌석으로 전체 수익 +39% 증가', wx: 246, wy: 176, profitBonus: 0.39, speedBonus: 0.06 },
+      { id: 's9_laurel_tree', unlockStage: 9, renderType: 'flower_pot', name: '헤스페리데스 황금꽃 화분', icon: '🌼', baseCost: 7200000000, max: 5, desc: '신성한 정원 꽃화분으로 전체 수익 +40% 증가', wx: 287, wy: 176, profitBonus: 0.40, speedBonus: 0.06 },
+      { id: 's9_sun_brazier', unlockStage: 9, renderType: 'fireplace', name: '태양신 아폴론 성화 화덕', icon: '🔥', baseCost: 9900000000, max: 5, desc: '꺼지지 않는 성화로 조리 속도 +9% & 수익 +41% 증가', wx: 328, wy: 176, profitBonus: 0.41, speedBonus: 0.09 },
+      { id: 's9_angel_statue_deco', unlockStage: 9, renderType: 'cat_tower', name: '천공 궁전 로얄 캣타워', icon: '🪽', baseCost: 13800000000, max: 5, desc: '천사의 축복으로 VIP 및 전체 수익 +42% 증가', wx: 369, wy: 176, profitBonus: 0.42, speedBonus: 0 },
+      { id: 's9_royal_tea_set', unlockStage: 9, renderType: 'tea_table', name: '황실 다과회 원형 티테이블', icon: '🫖', baseCost: 19000000000, max: 5, desc: '천상계 다과 서비스로 전체 수익 +43% 증가', wx: 410, wy: 176, profitBonus: 0.43, speedBonus: 0.07 },
+      { id: 's9_celestial_globe', unlockStage: 9, renderType: 'planet_globe', name: '황도 12궁 황금 천구의', icon: '🌟', baseCost: 26500000000, max: 5, desc: '별자리의 가호로 전체 수익 +44% 증가', wx: 451, wy: 176, profitBonus: 0.44, speedBonus: 0.07 },
+      { id: 's9_nectar_cellar', unlockStage: 9, renderType: 'wine_rack', name: '올림포스 신주(神酒) 와인 셀러', icon: '🍷', baseCost: 36500000000, max: 5, desc: '천상의 빈티지 와인으로 전체 수익 +45% 증가', wx: 82, wy: 353, profitBonus: 0.45, speedBonus: 0 },
+      { id: 's9_gold_gate', unlockStage: 9, renderType: 'wood_fence', name: '천공 정원 원목 테라스 난간', icon: '🚧', baseCost: 50500000000, max: 5, desc: '구름 정원 난간으로 전체 수익 +46% 증가', wx: 123, wy: 353, profitBonus: 0.46, speedBonus: 0 },
+      { id: 's9_prophecy_books', unlockStage: 9, renderType: 'bookshelf', name: '신성한 황금 양피지 서고', icon: '📜', baseCost: 70000000000, max: 5, desc: '신들의 만찬 기록으로 전체 수익 +47% 증가', wx: 164, wy: 353, profitBonus: 0.47, speedBonus: 0.07 },
+      { id: 's9_cherub_gram', unlockStage: 9, renderType: 'gramophone', name: '천사의 나팔 황금 축음기', icon: '🎺', baseCost: 96000000000, max: 5, desc: '팡파르 울림으로 전체 수익 +48% & 속도 +8% 증가', wx: 205, wy: 353, profitBonus: 0.48, speedBonus: 0.08 },
+      { id: 's9_halo_stand', unlockStage: 9, renderType: 'chalk_stand', name: '연회장 만찬 메뉴 보드', icon: '🌈', baseCost: 132000000000, max: 5, desc: '연회 코스 안내로 전체 수익 +49% 증가', wx: 246, wy: 353, profitBonus: 0.49, speedBonus: 0.06 },
+      { id: 's9_palace_couch', unlockStage: 9, renderType: 'red_sofa_3seat', name: '황제 전용 3인용 벨벳 소파', icon: '🛋️', baseCost: 182000000000, max: 5, desc: '최고급 연회석으로 전체 수익 +50% 증가', wx: 287, wy: 353, profitBonus: 0.50, speedBonus: 0 },
+      { id: 's9_gold_candelabra', unlockStage: 9, renderType: 'candelabra_stand', name: '대신전 황금 촛대 스탠드', icon: '🕯️', baseCost: 250000000000, max: 5, desc: '성스러운 촛불 조명으로 전체 수익 +51% 증가', wx: 328, wy: 353, profitBonus: 0.51, speedBonus: 0.07 },
+      { id: 's9_feast_trolley', unlockStage: 9, renderType: 'serving_cart', name: '황금 성배 만찬 서빙 카트', icon: '🍽️', baseCost: 345000000000, max: 5, desc: '황실 전담 서빙 카트로 전체 수익 +52% & 속도 +9% 증가', wx: 369, wy: 353, profitBonus: 0.52, speedBonus: 0.09 },
+      { id: 's9_olive_pot', unlockStage: 9, renderType: 'leafy_plant', name: '올림포스 월계수 & 올리브 화분', icon: '🌿', baseCost: 475000000000, max: 5, desc: '평화와 풍요의 나무로 전체 수익 +53% 증가', wx: 410, wy: 353, profitBonus: 0.53, speedBonus: 0.06 },
+      { id: 's9_eternal_clock', unlockStage: 9, renderType: 'pendulum_clock', name: '크로노스 영원의 괘종시계', icon: '🕰️', baseCost: 655000000000, max: 5, desc: '시간의 신 축복으로 오프라인 및 전체 수익 +54% 증가', wx: 451, wy: 353, profitBonus: 0.54, speedBonus: 0.08 },
+      { id: 's9_ambrosia_cask', unlockStage: 9, renderType: 'barrel_cask', name: '황금 넥타르 숙성 오크통', icon: '🍯', baseCost: 900000000000, max: 5, desc: '신들의 비주 숙성으로 전체 수익 +56% 증가', wx: 72, wy: 271, profitBonus: 0.56, speedBonus: 0 },
+      { id: 's9_bakery_altar', unlockStage: 9, renderType: 'bakery_rack', name: '천상의 성찬 브레드 진열대', icon: '🥐', baseCost: 1250000000000, max: 5, desc: '황금빛 브레드 진열로 전체 수익 +58% 증가', wx: 455, wy: 271, profitBonus: 0.58, speedBonus: 0.09 },
 
       // ==================== Stage 10 전용 설비 (24종: 은하수 우주정거장 스타 다이너) ====================
-      { id: 'cosmic_globe', unlockStage: 10, renderType: 'planet_globe', name: '무중력 홀로그램 행성본', icon: '🪐', baseCost: 12000000000, max: 5, desc: '은하계 랜드마크 효과로 전체 수익 +40% & 속도 +8% 증가', wx: 125, wy: 210, profitBonus: 0.40, speedBonus: 0.08 },
-      { id: 's10_zero_g_coffee', unlockStage: 10, renderType: 'espresso', name: '반중력 블랙홀 에스프레소 머신', icon: '☕', baseCost: 17000000000, max: 5, desc: '초중력 추출로 조리 속도 +10% & 수익 +41% 증가', wx: 215, wy: 210, profitBonus: 0.41, speedBonus: 0.10 },
-      { id: 's10_nebula_tank', unlockStage: 10, renderType: 'aquarium', name: '안드로메다 성운 바이오 수조', icon: '🌌', baseCost: 24000000000, max: 5, desc: '우주 해양 생태 수조로 전체 수익 +42% 증가', wx: 305, wy: 210, profitBonus: 0.42, speedBonus: 0 },
-      { id: 's10_star_case', unlockStage: 10, renderType: 'showcase', name: '크리스탈 운석 디저트 쇼케이스', icon: '🍩', baseCost: 34000000000, max: 5, desc: '토성 고리 도넛 진열로 전체 수익 +43% 증가', wx: 395, wy: 210, profitBonus: 0.43, speedBonus: 0 },
-      { id: 's10_warp_clock', unlockStage: 10, renderType: 'pendulum_clock', name: '시공간 워프 크로노 괘종시계', icon: '⏳', baseCost: 48000000000, max: 5, desc: '시간 가속장으로 전체 속도 +9% & 수익 +44% 증가', wx: 485, wy: 210, profitBonus: 0.44, speedBonus: 0.09 },
-      { id: 's10_alien_plant', unlockStage: 10, renderType: 'flower_pot', name: '바이오 발광 스타플라워 화분', icon: '🌼', baseCost: 68000000000, max: 5, desc: '우주 식물 에너지로 전체 수익 +45% 증가', wx: 575, wy: 210, profitBonus: 0.45, speedBonus: 0.06 },
-      { id: 's10_rocket_tower', unlockStage: 10, renderType: 'cat_tower', name: '우주정거장 전망대 캣타워', icon: '🚀', baseCost: 95000000000, max: 5, desc: '우주비행사 고양이 놀이터로 전체 수익 +46% 증가', wx: 665, wy: 210, profitBonus: 0.46, speedBonus: 0.07 },
-      { id: 's10_moon_sofa', unlockStage: 10, renderType: 'sofa_table_set', name: '스타 다이너 소파 & 테이블 세트', icon: '🛋️', baseCost: 135000000000, max: 5, desc: '은하계 1등석 부스로 전체 수익 +47% 증가', wx: 755, wy: 210, profitBonus: 0.47, speedBonus: 0 },
-      { id: 's10_plasma_oven', unlockStage: 10, renderType: 'fireplace', name: '항성 핵융합 플라즈마 화덕', icon: '☀️', baseCost: 190000000000, max: 5, desc: '초신성 열기로 조리 속도 +11% & 수익 +48% 증가', wx: 845, wy: 210, profitBonus: 0.48, speedBonus: 0.11 },
-      { id: 's10_quantum_arcade', unlockStage: 10, renderType: 'arcade_machine', name: '은하계 워프 아케이드 게임기', icon: '🕹️', baseCost: 265000000000, max: 5, desc: '우주 시뮬레이터로 전체 수익 +49% 증가', wx: 935, wy: 210, profitBonus: 0.49, speedBonus: 0.08 },
-      { id: 's10_pulsar_juke', unlockStage: 10, renderType: 'jukebox', name: '펄사 코스믹 멜로디 주크박스', icon: '📡', baseCost: 370000000000, max: 5, desc: '우주 교향곡 방송으로 전체 수익 +50% 증가', wx: 1025, wy: 210, profitBonus: 0.50, speedBonus: 0.08 },
-      { id: 's10_cosmic_wine', unlockStage: 10, renderType: 'wine_rack', name: '은하수 샴페인 셀러 랙', icon: '🍾', baseCost: 520000000000, max: 5, desc: '성운 샴페인 컬렉션으로 전체 수익 +51% 증가', wx: 125, wy: 545, profitBonus: 0.51, speedBonus: 0 },
-      { id: 's10_star_map_shelf', unlockStage: 10, renderType: 'bookshelf', name: '성간 항해 아카이브 서고', icon: '📚', baseCost: 730000000000, max: 5, desc: '우주 만물의 레시피 기록으로 전체 수익 +52% 증가', wx: 215, wy: 545, profitBonus: 0.52, speedBonus: 0.08 },
-      { id: 's10_meteor_board', unlockStage: 10, renderType: 'surfboard', name: '은하 철도 코즈믹 서핑보드', icon: '☄️', baseCost: 1020000000000, max: 5, desc: '혜성 파도타기 장식으로 전체 수익 +53% 증가', wx: 305, wy: 545, profitBonus: 0.53, speedBonus: 0.09 },
-      { id: 's10_laser_shield', unlockStage: 10, renderType: 'wood_fence', name: '스타 다이너 우드 & 메탈 파티션', icon: '🛡️', baseCost: 1420000000000, max: 5, desc: '우주정거장 라운지 펜스로 전체 수익 +54% 증가', wx: 395, wy: 545, profitBonus: 0.54, speedBonus: 0 },
-      { id: 's10_singularity_harp', unlockStage: 10, renderType: 'harp_statue', name: '초끈이론 차원 공명 하프', icon: '🌌', baseCost: 2000000000000, max: 5, desc: '우주 현악 울림으로 전체 수익 +55% & 속도 +10% 증가', wx: 485, wy: 545, profitBonus: 0.55, speedBonus: 0.10 },
-      { id: 's10_captain_couch', unlockStage: 10, renderType: 'red_sofa_3seat', name: '함장실 3인용 파노라마 소파', icon: '🛋️', baseCost: 2800000000000, max: 5, desc: '은하함대 제독 전용석으로 전체 수익 +56% 증가', wx: 575, wy: 545, profitBonus: 0.56, speedBonus: 0 },
-      { id: 's10_astro_cart', unlockStage: 10, renderType: 'serving_cart', name: '무중력 플로팅 서빙 트롤리', icon: '🍽️', baseCost: 3900000000000, max: 5, desc: '초고속 호버 서빙으로 전체 수익 +58% & 속도 +10% 증가', wx: 665, wy: 545, profitBonus: 0.58, speedBonus: 0.10 },
-      { id: 's10_bio_dome_pot', unlockStage: 10, renderType: 'leafy_plant', name: '우주 바이오돔 산소 공급 화분', icon: '🪴', baseCost: 5450000000000, max: 5, desc: '청정 산소 공급으로 직원 속도 +9% & 수익 +60% 증가', wx: 755, wy: 545, profitBonus: 0.60, speedBonus: 0.09 },
-      { id: 's10_sprout_lab', unlockStage: 10, renderType: 'sprout_pot', name: '행성 테라포밍 새싹 화분', icon: '🌱', baseCost: 7600000000000, max: 5, desc: '희귀 우주 작물 재배로 전체 수익 +62% 증가', wx: 845, wy: 545, profitBonus: 0.62, speedBonus: 0.07 },
-      { id: 's10_starlight_candle', unlockStage: 10, renderType: 'candelabra_stand', name: '성운 플라즈마 촛대 스탠드', icon: '🕯️', baseCost: 10600000000000, max: 5, desc: '은하수 캔들라이트로 전체 수익 +64% 증가', wx: 935, wy: 545, profitBonus: 0.64, speedBonus: 0.08 },
-      { id: 's10_space_bakery', unlockStage: 10, renderType: 'bakery_rack', name: '우주식 브레드 & 도넛 진열장', icon: '🍩', baseCost: 14800000000000, max: 5, desc: '스타 다이너 베이커리로 전체 수익 +66% 증가', wx: 1025, wy: 545, profitBonus: 0.66, speedBonus: 0 },
-      { id: 's10_gravity_cask', unlockStage: 10, renderType: 'barrel_cask', name: '초신성 에이징 오크 배럴', icon: '🛢️', baseCost: 20500000000000, max: 5, desc: '무중력 숙성 음료로 전체 수익 +70% 증가', wx: 105, wy: 390, profitBonus: 0.70, speedBonus: 0.09 },
-      { id: 's10_command_board', unlockStage: 10, renderType: 'chalk_stand', name: '스타 다이너 웰컴 메뉴보드', icon: '🪧', baseCost: 28500000000000, max: 5, desc: '전 우주 미식가 집결로 전체 수익 +75% & 속도 +12% 증가', wx: 1040, wy: 390, profitBonus: 0.75, speedBonus: 0.12 }
+      { id: 'cosmic_globe', unlockStage: 10, renderType: 'planet_globe', name: '무중력 홀로그램 행성본', icon: '🪐', baseCost: 12000000000, max: 5, desc: '은하계 랜드마크 효과로 전체 수익 +40% & 속도 +8% 증가', wx: 80, wy: 176, profitBonus: 0.40, speedBonus: 0.08 },
+      { id: 's10_zero_g_coffee', unlockStage: 10, renderType: 'espresso', name: '반중력 블랙홀 에스프레소 머신', icon: '☕', baseCost: 17000000000, max: 5, desc: '초중력 추출로 조리 속도 +10% & 수익 +41% 증가', wx: 117, wy: 176, profitBonus: 0.41, speedBonus: 0.10 },
+      { id: 's10_nebula_tank', unlockStage: 10, renderType: 'aquarium', name: '안드로메다 성운 바이오 수조', icon: '🌌', baseCost: 24000000000, max: 5, desc: '우주 해양 생태 수조로 전체 수익 +42% 증가', wx: 154, wy: 176, profitBonus: 0.42, speedBonus: 0 },
+      { id: 's10_star_case', unlockStage: 10, renderType: 'showcase', name: '크리스탈 운석 디저트 쇼케이스', icon: '🍩', baseCost: 34000000000, max: 5, desc: '토성 고리 도넛 진열로 전체 수익 +43% 증가', wx: 191, wy: 176, profitBonus: 0.43, speedBonus: 0 },
+      { id: 's10_warp_clock', unlockStage: 10, renderType: 'pendulum_clock', name: '시공간 워프 크로노 괘종시계', icon: '⏳', baseCost: 48000000000, max: 5, desc: '시간 가속장으로 전체 속도 +9% & 수익 +44% 증가', wx: 228, wy: 176, profitBonus: 0.44, speedBonus: 0.09 },
+      { id: 's10_alien_plant', unlockStage: 10, renderType: 'flower_pot', name: '바이오 발광 스타플라워 화분', icon: '🌼', baseCost: 68000000000, max: 5, desc: '우주 식물 에너지로 전체 수익 +45% 증가', wx: 265, wy: 176, profitBonus: 0.45, speedBonus: 0.06 },
+      { id: 's10_rocket_tower', unlockStage: 10, renderType: 'cat_tower', name: '우주정거장 전망대 캣타워', icon: '🚀', baseCost: 95000000000, max: 5, desc: '우주비행사 고양이 놀이터로 전체 수익 +46% 증가', wx: 301, wy: 176, profitBonus: 0.46, speedBonus: 0.07 },
+      { id: 's10_moon_sofa', unlockStage: 10, renderType: 'sofa_table_set', name: '스타 다이너 소파 & 테이블 세트', icon: '🛋️', baseCost: 135000000000, max: 5, desc: '은하계 1등석 부스로 전체 수익 +47% 증가', wx: 338, wy: 176, profitBonus: 0.47, speedBonus: 0 },
+      { id: 's10_plasma_oven', unlockStage: 10, renderType: 'fireplace', name: '항성 핵융합 플라즈마 화덕', icon: '☀️', baseCost: 190000000000, max: 5, desc: '초신성 열기로 조리 속도 +11% & 수익 +48% 증가', wx: 375, wy: 176, profitBonus: 0.48, speedBonus: 0.11 },
+      { id: 's10_quantum_arcade', unlockStage: 10, renderType: 'arcade_machine', name: '은하계 워프 아케이드 게임기', icon: '🕹️', baseCost: 265000000000, max: 5, desc: '우주 시뮬레이터로 전체 수익 +49% 증가', wx: 412, wy: 176, profitBonus: 0.49, speedBonus: 0.08 },
+      { id: 's10_pulsar_juke', unlockStage: 10, renderType: 'jukebox', name: '펄사 코스믹 멜로디 주크박스', icon: '📡', baseCost: 370000000000, max: 5, desc: '우주 교향곡 방송으로 전체 수익 +50% 증가', wx: 449, wy: 176, profitBonus: 0.50, speedBonus: 0.08 },
+      { id: 's10_cosmic_wine', unlockStage: 10, renderType: 'wine_rack', name: '은하수 샴페인 셀러 랙', icon: '🍾', baseCost: 520000000000, max: 5, desc: '성운 샴페인 컬렉션으로 전체 수익 +51% 증가', wx: 80, wy: 353, profitBonus: 0.51, speedBonus: 0 },
+      { id: 's10_star_map_shelf', unlockStage: 10, renderType: 'bookshelf', name: '성간 항해 아카이브 서고', icon: '📚', baseCost: 730000000000, max: 5, desc: '우주 만물의 레시피 기록으로 전체 수익 +52% 증가', wx: 117, wy: 353, profitBonus: 0.52, speedBonus: 0.08 },
+      { id: 's10_meteor_board', unlockStage: 10, renderType: 'surfboard', name: '은하 철도 코즈믹 서핑보드', icon: '☄️', baseCost: 1020000000000, max: 5, desc: '혜성 파도타기 장식으로 전체 수익 +53% 증가', wx: 154, wy: 353, profitBonus: 0.53, speedBonus: 0.09 },
+      { id: 's10_laser_shield', unlockStage: 10, renderType: 'wood_fence', name: '스타 다이너 우드 & 메탈 파티션', icon: '🛡️', baseCost: 1420000000000, max: 5, desc: '우주정거장 라운지 펜스로 전체 수익 +54% 증가', wx: 191, wy: 353, profitBonus: 0.54, speedBonus: 0 },
+      { id: 's10_singularity_harp', unlockStage: 10, renderType: 'harp_statue', name: '초끈이론 차원 공명 하프', icon: '🌌', baseCost: 2000000000000, max: 5, desc: '우주 현악 울림으로 전체 수익 +55% & 속도 +10% 증가', wx: 228, wy: 353, profitBonus: 0.55, speedBonus: 0.10 },
+      { id: 's10_captain_couch', unlockStage: 10, renderType: 'red_sofa_3seat', name: '함장실 3인용 파노라마 소파', icon: '🛋️', baseCost: 2800000000000, max: 5, desc: '은하함대 제독 전용석으로 전체 수익 +56% 증가', wx: 265, wy: 353, profitBonus: 0.56, speedBonus: 0 },
+      { id: 's10_astro_cart', unlockStage: 10, renderType: 'serving_cart', name: '무중력 플로팅 서빙 트롤리', icon: '🍽️', baseCost: 3900000000000, max: 5, desc: '초고속 호버 서빙으로 전체 수익 +58% & 속도 +10% 증가', wx: 301, wy: 353, profitBonus: 0.58, speedBonus: 0.10 },
+      { id: 's10_bio_dome_pot', unlockStage: 10, renderType: 'leafy_plant', name: '우주 바이오돔 산소 공급 화분', icon: '🪴', baseCost: 5450000000000, max: 5, desc: '청정 산소 공급으로 직원 속도 +9% & 수익 +60% 증가', wx: 338, wy: 353, profitBonus: 0.60, speedBonus: 0.09 },
+      { id: 's10_sprout_lab', unlockStage: 10, renderType: 'sprout_pot', name: '행성 테라포밍 새싹 화분', icon: '🌱', baseCost: 7600000000000, max: 5, desc: '희귀 우주 작물 재배로 전체 수익 +62% 증가', wx: 375, wy: 353, profitBonus: 0.62, speedBonus: 0.07 },
+      { id: 's10_starlight_candle', unlockStage: 10, renderType: 'candelabra_stand', name: '성운 플라즈마 촛대 스탠드', icon: '🕯️', baseCost: 10600000000000, max: 5, desc: '은하수 캔들라이트로 전체 수익 +64% 증가', wx: 412, wy: 353, profitBonus: 0.64, speedBonus: 0.08 },
+      { id: 's10_space_bakery', unlockStage: 10, renderType: 'bakery_rack', name: '우주식 브레드 & 도넛 진열장', icon: '🍩', baseCost: 14800000000000, max: 5, desc: '스타 다이너 베이커리로 전체 수익 +66% 증가', wx: 449, wy: 353, profitBonus: 0.66, speedBonus: 0 },
+      { id: 's10_gravity_cask', unlockStage: 10, renderType: 'barrel_cask', name: '초신성 에이징 오크 배럴', icon: '🛢️', baseCost: 20500000000000, max: 5, desc: '무중력 숙성 음료로 전체 수익 +70% 증가', wx: 72, wy: 271, profitBonus: 0.70, speedBonus: 0.09 },
+      { id: 's10_command_board', unlockStage: 10, renderType: 'chalk_stand', name: '스타 다이너 웰컴 메뉴보드', icon: '🪧', baseCost: 28500000000000, max: 5, desc: '전 우주 미식가 집결로 전체 수익 +75% & 속도 +12% 증가', wx: 455, wy: 271, profitBonus: 0.75, speedBonus: 0.12 }
     ];
 
     // =========================================================================
     // 게임 상태 (GameState)
     // =========================================================================
     const DEFAULT_STATION_COORDS = [
-      { x: 280, y: 108 },
-      { x: 480, y: 108 },
-      { x: 740, y: 108 },
-      { x: 940, y: 108 }
+      { x: 112, y: 108 },
+      { x: 210, y: 108 },
+      { x: 310, y: 108 },
+      { x: 408, y: 108 }
     ];
 
-    const DEFAULT_CASHIER_POS = { x: 610, y: 150 };
+    const DEFAULT_CASHIER_POS = { x: 260, y: 156 };
 
     const GameState = {
       stageIndex: 0,
@@ -2265,6 +2254,8 @@
 
       weatherIndex: 0,
       weatherTimer: 120,
+      upkeepWarnedThisCycle: false,
+      lastAngryQuizIdx: -1,
       starRating: 5.0,
       snsBoostRemaining: 0,
 
@@ -2331,17 +2322,9 @@
     let ctx = canvas.getContext('2d');
 
     const Camera = {
-      x: 120,
+      x: 0,
       y: 0,
-      zoom: 0.78,
-      minZoom: 0.48,
-      maxZoom: 1.35,
-      isDraggingCam: false,
-      dragStartX: 0,
-      dragStartY: 0,
-      camStartX: 0,
-      camStartY: 0,
-      movedDist: 0
+      zoom: 1.0
     };
 
     const PlacementState = {
@@ -2353,24 +2336,24 @@
       draggingStationIdx: -1,
       draggingCashier: false,
       draggingDecorInfo: null, // { id: decorId, idx: instanceIndex }
-      previewX: 550,
-      previewY: 360
+      previewX: 260,
+      previewY: 250
     };
 
     const World = {
-      mapWidth: 1140,
-      mapHeight: 620,
+      mapWidth: 520,
+      mapHeight: 400,
       viewWidth: 420,
       viewHeight: 320,
       kitchenHeight: 155,
-      entrance: { x: 42, y: 360 },
+      entrance: { x: 36, y: 268 },
       stations: [
-        { id: 0, name: '그릴 조리대', icon: '🍳', x: 280, y: 108 },
-        { id: 1, name: '화구 조리대', icon: '🔥', x: 480, y: 108 },
-        { id: 2, name: '도마 조리대', icon: '🔪', x: 740, y: 108 },
-        { id: 3, name: '오븐/음료대', icon: '🧋', x: 940, y: 108 }
+        { id: 0, name: '그릴 조리대', icon: '🍳', x: 112, y: 108 },
+        { id: 1, name: '화구 조리대', icon: '🔥', x: 210, y: 108 },
+        { id: 2, name: '도마 조리대', icon: '🔪', x: 310, y: 108 },
+        { id: 3, name: '오븐/음료대', icon: '🧋', x: 408, y: 108 }
       ],
-      cashierPos: { x: 610, y: 150 },
+      cashierPos: { x: 260, y: 156 },
       tables: [],
       customers: [],
       staff: [],
@@ -2385,22 +2368,28 @@
       spawnTimer: 0
     };
 
+    // 스테이지별 테이블 최대 개수: St.1~3 (3개), St.4~6 (4개), St.7~10 (5개)
+    const MAX_TOTAL_TABLES = 5;
+    function getMaxTablesForStage(stageIdx = GameState.stageIndex) {
+      const st = STAGES[stageIdx] || STAGES[0];
+      if (st.id <= 3) return 3;
+      if (st.id <= 6) return 4;
+      return 5;
+    }
+
     const DEFAULT_TABLE_COORDS = [
-      { x: 260, y: 300 },
-      { x: 430, y: 300 },
-      { x: 600, y: 300 },
-      { x: 770, y: 300 },
-      { x: 920, y: 300 },
-      { x: 260, y: 470 },
-      { x: 430, y: 470 },
-      { x: 600, y: 470 },
-      { x: 770, y: 470 },
-      { x: 920, y: 470 }
+      { x: 148, y: 242 },
+      { x: 278, y: 242 },
+      { x: 408, y: 242 },
+      { x: 205, y: 332 },
+      { x: 350, y: 332 }
     ];
 
     function initWorldTables() {
-      for (let i = 0; i < 10; i++) {
-        const savedPos = GameState.tablePositions[i] || DEFAULT_TABLE_COORDS[i];
+      World.tables.length = MAX_TOTAL_TABLES;
+      for (let i = 0; i < MAX_TOTAL_TABLES; i++) {
+        const rawPos = GameState.tablePositions[i] || DEFAULT_TABLE_COORDS[i];
+        const savedPos = sanitizeFloorCoord(rawPos.x, rawPos.y);
         if (!World.tables[i]) {
           World.tables[i] = { id: i, x: savedPos.x, y: savedPos.y, occupiedBy: null };
         } else {
@@ -2411,35 +2400,30 @@
       }
       // 조리대 및 계산대 좌표 동기화
       for (let i = 0; i < World.stations.length; i++) {
-        const stPos = GameState.stationPositions[i] || DEFAULT_STATION_COORDS[i];
+        const rawSt = GameState.stationPositions[i] || DEFAULT_STATION_COORDS[i];
+        const stPos = sanitizeFloorCoord(rawSt.x, rawSt.y);
         World.stations[i].x = stPos.x;
         World.stations[i].y = stPos.y;
         GameState.stationPositions[i] = { x: stPos.x, y: stPos.y };
       }
       if (GameState.cashierPos) {
-        World.cashierPos.x = GameState.cashierPos.x;
-        World.cashierPos.y = GameState.cashierPos.y;
+        const cPos = sanitizeFloorCoord(GameState.cashierPos.x, GameState.cashierPos.y);
+        World.cashierPos.x = cPos.x;
+        World.cashierPos.y = cPos.y;
+        GameState.cashierPos = { x: cPos.x, y: cPos.y };
       }
     }
 
     function clampCamera() {
+      // 기본 고정 매장 화면: 드래그/줌 없이 매장 전체(520x400)가 한눈에 들어오도록 자동 맞춤 고정
+      const pad = 6;
+      const fitW = Math.max(200, World.viewWidth - pad * 2);
+      const fitH = Math.max(160, World.viewHeight - pad * 2);
+      Camera.zoom = Math.min(fitW / World.mapWidth, fitH / World.mapHeight);
       const visibleW = World.viewWidth / Camera.zoom;
       const visibleH = World.viewHeight / Camera.zoom;
-
-      if (visibleW >= World.mapWidth) {
-        Camera.x = -(visibleW - World.mapWidth) / 2;
-      } else {
-        Camera.x = Math.max(0, Math.min(World.mapWidth - visibleW, Camera.x));
-      }
-
-      if (visibleH >= World.mapHeight) {
-        Camera.y = -(visibleH - World.mapHeight) / 2;
-      } else {
-        Camera.y = Math.max(0, Math.min(World.mapHeight - visibleH, Camera.y));
-      }
-
-      const resetBtn = document.getElementById('btn-cam-reset');
-      if (resetBtn) resetBtn.textContent = `${Math.round(Camera.zoom * 100)}%`;
+      Camera.x = -(visibleW - World.mapWidth) / 2;
+      Camera.y = -(visibleH - World.mapHeight) / 2;
     }
 
     function screenToWorld(clientX, clientY) {
@@ -2632,10 +2616,12 @@
         if (idx === 0) GameState.unlockedRecipes[m.id] = true;
       });
 
-      GameState.tablesCount = 2;
+      GameState.tablesCount = Math.min(2, getMaxTablesForStage(stageIdx));
       GameState.tablePositions = DEFAULT_TABLE_COORDS.map(pt => ({ x: pt.x, y: pt.y }));
       GameState.stationPositions = DEFAULT_STATION_COORDS.map(pt => ({ x: pt.x, y: pt.y }));
       GameState.cashierPos = { x: DEFAULT_CASHIER_POS.x, y: DEFAULT_CASHIER_POS.y };
+      GameState.weatherTimer = 120;
+      GameState.upkeepWarnedThisCycle = false;
 
       GameState.chefsCount = 1;
       GameState.serversCount = 1;
@@ -2698,8 +2684,8 @@
         const idx = World.staff.length;
         const isChef = idx < GameState.chefsCount;
         const st = World.stations[idx % World.stations.length];
-        const homeX = isChef ? st.x : (World.cashierPos.x + ((idx % 3) - 1) * 70);
-        const homeY = isChef ? (st.y + 34) : (World.cashierPos.y + 42);
+        const homeX = isChef ? st.x : (World.cashierPos.x + ((idx % 3) - 1) * 40);
+        const homeY = isChef ? (st.y + 30) : (World.cashierPos.y + 34);
         World.staff.push({
           id: 'staff_' + Date.now() + '_' + idx,
           role: isChef ? 'chef' : 'server',
@@ -2729,8 +2715,8 @@
         s.trait = getTraitById(traitId);
         s.stationIndex = i % World.stations.length;
         const st = World.stations[s.stationIndex];
-        s.homeX = isChef ? st.x : (World.cashierPos.x + ((roleIdx % 4) - 1.5) * 65);
-        s.homeY = isChef ? (st.y + 34) : (World.cashierPos.y + 40);
+        s.homeX = isChef ? st.x : (World.cashierPos.x + ((roleIdx % 4) - 1.5) * 38);
+        s.homeY = isChef ? (st.y + 30) : (World.cashierPos.y + 34);
       });
     }
 
@@ -2741,17 +2727,17 @@
       {
         complaint: "💢 \"식탁에 털이랑 물기가 묻어있잖아냥!! 당장 어떻게 할 거냥?!\"",
         choices: [
-          { text: "🙏 즉시 깨끗한 행주로 닦아드리고 따뜻한 차를 서비스로 드립니다!", correct: true },
           { text: "😾 고양이 식당이니 털이 있는 건 당연하다고 우긴다", correct: false },
+          { text: "🙏 즉시 깨끗한 행주로 닦아드리고 따뜻한 차를 서비스로 드립니다!", correct: true },
           { text: "🙉 못 들은 척 주방으로 도망간다", correct: false }
         ]
       },
       {
         complaint: "💢 \"내 요리가 옆 테이블보다 늦게 나오는 것 같다냥! 배고파서 화난다냥!!\"",
         choices: [
-          { text: "🏃 지금 바로 1순위로 조리해 드리고 에피타이저 츄르를 먼저 드립니다!", correct: true },
           { text: "😤 순서대로 기다리라며 화를 낸다", correct: false },
-          { text: "💤 바쁘니까 다른 식당 가라고 한다", correct: false }
+          { text: "💤 바쁘니까 다른 식당 가라고 한다", correct: false },
+          { text: "🏃 지금 바로 1순위로 조리해 드리고 에피타이저 츄르를 먼저 드립니다!", correct: true }
         ]
       },
       {
@@ -2763,19 +2749,171 @@
         ]
       },
       {
-        complaint: "💢 \"음식 온도가 내 입맛보다 살짝 뜨겁다냥! 혀 데일 뻔했다냥!!\"",
+        complaint: "💢 \"음식 온도가 내 입맛보다 살짝 뜨겁다냥! 고양이 혀인 거 모르냥!!\"",
         choices: [
-          { text: "❄️ 정중히 사과드리고 먹기 딱 좋은 온도로 새로 조리해 서비스 디저트와 함께 드립니다!", correct: true },
           { text: "🔥 원래 뜨겁게 먹는 요리라고 그냥 먹으라고 한다", correct: false },
+          { text: "❄️ 정중히 사과드리고 먹기 딱 좋은 온도로 새로 조리해 서비스 디저트와 함께 드립니다!", correct: true },
           { text: "🧊 얼음을 국물에 그냥 쏟아붓는다", correct: false }
         ]
       },
       {
         complaint: "💢 \"내가 좋아하는 개다래나무 향기가 부족하다냥! 기분이 안 난다냥!!\"",
         choices: [
-          { text: "🌿 특제 캣닢·개다래 아로마 향초를 피워드리고 VIP 할인을 약속드립니다!", correct: true },
           { text: "🐟 생선 비린내만 풍기면 되지 않냐고 따진다", correct: false },
-          { text: "🚪 밖에서 바람이나 쐬고 오라고 한다", correct: false }
+          { text: "🚪 밖에서 바람이나 쐬고 오라고 한다", correct: false },
+          { text: "🌿 특제 캣닢·개다래 아로마 향초를 피워드리고 VIP 할인을 약속드립니다!", correct: true }
+        ]
+      },
+      {
+        complaint: "💢 \"요리에 올라간 연어 토핑이 메뉴판 그림보다 작아 보인다냥!!\"",
+        choices: [
+          { text: "🍣 죄송합니다! 신선한 연어 토핑을 듬뿍 추가해 새로 담아 드리겠습니다!", correct: true },
+          { text: "🔍 돋보기로 보면 똑같다고 둘러댄다", correct: false },
+          { text: "🖼️ 메뉴판 그림은 원래 과장 광고라고 당당히 말한다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"의자 방석이 숨이 죽어서 내 소중한 꼬리가 배긴다냥!!\"",
+        choices: [
+          { text: "🪑 그냥 서서 식사하라고 의자를 빼버린다", correct: false },
+          { text: "☁️ 폭신한 극세사 솜방석으로 즉시 교체해 드리고 무릎 담요도 챙겨 드립니다!", correct: true },
+          { text: "😼 살이 쪄서 그런 거 아니냐며 놀린다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"물컵에 얼음이 너무 많아서 수염이랑 이가 시리다냥!!\"",
+        choices: [
+          { text: "🐾 앞발로 얼음을 직접 건져내라고 한다", correct: false },
+          { text: "♨️ 펄펄 끓는 뜨거운 물을 대신 가져다준다", correct: false },
+          { text: "💧 즉시 미지근하고 깨끗한 정수 물로 새 컵에 따라 드리겠습니다!", correct: true }
+        ]
+      },
+      {
+        complaint: "💢 \"창가 쪽 햇빛이 너무 눈부셔서 밥 먹다 눈이 부시다냥!!\"",
+        choices: [
+          { text: "🪟 블라인드 각도를 은은하게 조절해 드리고 시원한 웰컴 티를 대접합니다!", correct: true },
+          { text: "😎 눈 감고 식사하면 된다고 대꾸한다", correct: false },
+          { text: "☀️ 해가 질 때까지 굶고 기다리라고 한다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"접시 테두리에 소스가 한 방울 튀어 있다냥! 플레이팅이 영 아쉽다냥!!\"",
+        choices: [
+          { text: "👅 앞발로 핥아 먹으면 깨끗해진다고 한다", correct: false },
+          { text: "✨ 세심하지 못해 죄송합니다! 깨끗한 새 접시에 정갈하게 다시 담아 드리겠습니다!", correct: true },
+          { text: "🤷 맛만 좋으면 그만 아니냐며 한숨을 쉰다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"식전 빵이 살짝 식어서 겉이 바삭하지 않다냥!!\"",
+        choices: [
+          { text: "🪨 딱딱한 어제자 바게트를 던져준다", correct: false },
+          { text: "😒 원래 식은 빵이 소화가 잘된다고 우긴다", correct: false },
+          { text: "🥐 오븐에서 갓 구운 따끈바삭한 새 브레드와 수제 버터를 바로 내어드립니다!", correct: true }
+        ]
+      },
+      {
+        complaint: "💢 \"옆자리 손님이 자꾸 내 생선구이를 빤히 쳐다봐서 부담스럽다냥!!\"",
+        choices: [
+          { text: "🪴 아늑한 원목 파티션 화분으로 시야를 가려 드리고 편히 식사하시도록 배려합니다!", correct: true },
+          { text: "🐟 생선구이를 옆자리 손님에게 반쯤 나눠주라고 한다", correct: false },
+          { text: "👀 같이 눈싸움해서 이기라고 부추긴다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"오늘 날씨에 딱 맞는 추천 메뉴 설명을 아무도 안 해줬다냥!!\"",
+        choices: [
+          { text: "📋 메뉴판 글씨 못 읽냐며 퉁명스럽게 말한다", correct: false },
+          { text: "📖 오늘의 날씨 특선 요리와 풍미를 친절히 설명드리고 시식 한 입을 올립니다!", correct: true },
+          { text: "🎲 아무 메뉴나 눈 감고 찍으라고 한다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"테이블 다리가 미세하게 흔들려서 우유 잔이 출렁거린다냥!!\"",
+        choices: [
+          { text: "🥛 우유가 쏟기 전에 원샷하라고 재촉한다", correct: false },
+          { text: "🐾 손님 앞발로 테이블을 누르고 먹으라고 한다", correct: false },
+          { text: "🔧 즉시 수평 패드를 받쳐 흔들림을 잡고 넘친 우유도 새로 가득 채워 드립니다!", correct: true }
+        ]
+      },
+      {
+        complaint: "💢 \"디저트가 내 입맛엔 너무 달아서 입안이 텁텁하다냥!!\"",
+        choices: [
+          { text: "🍵 입가심하기 좋은 고소한 무설탕 보리차와 담백한 비스킷을 서비스로 내어드립니다!", correct: true },
+          { text: "🧂 그 위에 소금을 한 숟가락 뿌려버린다", correct: false },
+          { text: "🍬 설탕 시럽을 한 바퀴 더 둘러준다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"입 닦을 냅킨함이 텅 비어 있잖아냥!! 수염에 크림 묻었다냥!!\"",
+        choices: [
+          { text: "👕 앞치마 자락에 대충 닦으라고 내민다", correct: false },
+          { text: "🧻 부드러운 고급 냅킨과 따뜻한 물수건을 넉넉히 채워 바로 전달해 드립니다!", correct: true },
+          { text: "🐱 고양이니까 앞발로 세수하라고 말한다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"음식 크기가 커서 한 입에 우아하게 먹기 힘들다냥!!\"",
+        choices: [
+          { text: "👄 입을 더 크게 벌려 먹으라고 시범을 보인다", correct: false },
+          { text: "🍴 손으로 뜯어 먹으면 된다고 무시한다", correct: false },
+          { text: "🔪 셰프가 먹기 편한 한 입 크기로 정성껏 손질해 다시 대접해 드리겠습니다!", correct: true }
+        ]
+      },
+      {
+        complaint: "💢 \"시원한 음료를 시켰는데 귀여운 물고기 빨대가 안 꽂혀 있다냥!!\"",
+        choices: [
+          { text: "🥤 아차, 죄송합니다! 새 일러스트 빨대와 코스터를 바로 준비해 드리겠습니다!", correct: true },
+          { text: "🫗 그릇째 들고 마시는 게 상냥이라고 우긴다", correct: false },
+          { text: "🥢 대신 나무젓가락을 꽂아준다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"환기구 바람이 내 수염에 바로 불어서 간지럽다냥!!\"",
+        choices: [
+          { text: "✂️ 수염을 짧게 다듬어 주겠다고 가위를 찾는다", correct: false },
+          { text: "🌬️ 즉시 풍향 날개를 조절해 직접 바람이 닿지 않게 하고 따뜻한 차를 드립니다!", correct: true },
+          { text: "💨 선풍기까지 추가로 틀어준다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"특제 디핑 소스가 너무 적어서 마지막 튀김을 그냥 먹을 뻔했다냥!!\"",
+        choices: [
+          { text: "🫙 소스 그릇을 핥아 먹으라고 권한다", correct: false },
+          { text: "💸 소스 추가는 10만 골드라고 바가지를 씌운다", correct: false },
+          { text: "🥣 특제 소스를 넉넉하게 새 종지에 담아 바삭한 서비스 튀김 한 조각과 함께 드립니다!", correct: true }
+        ]
+      },
+      {
+        complaint: "💢 \"가쓰오부시 토핑이 팔랑팔랑 춤을 덜 추는 것 같다냥!!\"",
+        choices: [
+          { text: "🍲 갓 우려낸 뜨거운 풍미와 최고급 가쓰오부시를 풍성하게 얹어 생동감을 살려 드립니다!", correct: true },
+          { text: "💃 직원이 옆에서 대신 춤을 춰준다며 버틴다", correct: false },
+          { text: "🌬️ 입으로 후후 불어서 날려버린다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"오늘 입은 내 리본이랑 그릇 색깔이 안 어울려서 인증샷이 안 예쁘다냥!!\"",
+        choices: [
+          { text: "🎀 리본을 풀고 찍으라고 핀잔을 준다", correct: false },
+          { text: "🍽️ 손님의 리본 컬러와 찰떡인 스페셜 세라믹 플레이트로 바꿔 예쁘게 담아 드립니다!", correct: true },
+          { text: "📵 매장 내 촬영 금지라며 카메라를 가린다", correct: false }
+        ]
+      },
+      {
+        complaint: "💢 \"기다리느라 내 분홍 발바닥 젤리가 다 지쳤다냥!!\"",
+        choices: [
+          { text: "🐾 발바닥이 튼튼해져서 좋지 않냐고 농담한다", correct: false },
+          { text: "🚪 힘들면 집에 가서 쉬라고 문밖을 가리킨다", correct: false },
+          { text: "🛋️ 기다려 주셔서 감사합니다! 가장 폭신한 VIP석으로 모시고 웰컴 간식을 대접합니다!", correct: true }
+        ]
+      },
+      {
+        complaint: "💢 \"식후 그루밍 전에 앞발 닦을 따뜻한 아로마 타월이 왜 아직 안 나오냥!!\"",
+        choices: [
+          { text: "🧺 캐모마일 향을 입힌 포근한 스팀 타월과 식후 허브티를 지금 바로 준비해 올립니다!", correct: true },
+          { text: "🚰 화장실 수돗물에 씻고 오라고 한다", correct: false },
+          { text: "🧻 휴지 한 칸만 톡 떼어 던져준다", correct: false }
         ]
       }
     ];
@@ -2807,14 +2945,59 @@
       return { spawnSpeedFactor, tipFactor };
     }
 
+    function getBaseOperatingGps() {
+      // 일시적 버프(피크타임, 2배 부스터, 날씨 보너스)를 제외한 현재 매장의 상시 기초 영업 G/s 산출
+      const stage = STAGES[GameState.stageIndex];
+      const unlocked = getUnlockedMenus();
+      const { profitBonus, speedBonus } = getCostumeBonuses();
+      const decorB = getDecorBonuses();
+
+      let permProfitMult = 1 + profitBonus + decorB.profitBonus + getGoodLevel('vipBell') * 0.03;
+      permProfitMult *= (1 + getGoodLevel('cosmicCore') * 0.05);
+
+      const permSpeedMult = 1 + GameState.speedUpgradeLvl * 0.08 + getGoodLevel('goldenSpatula') * 0.015 + speedBonus + decorB.speedBonus;
+
+      let avgProfit = 0;
+      let avgCook = 0;
+      unlocked.forEach(m => {
+        const lvl = Math.max(1, GameState.menuLevels[m.id] || 1);
+        const { stars, mult } = getMilestoneInfo(lvl);
+        const starBonus = stars > 0 ? (1 + stars * getGoodLevel('starBadge') * 0.015) : 1;
+        avgProfit += m.baseProfit * lvl * mult * starBonus * permProfitMult;
+        avgCook += m.cookTime;
+      });
+      avgProfit /= unlocked.length;
+      avgCook /= unlocked.length;
+
+      const staffCount = GameState.chefsCount + GameState.serversCount;
+      const cycleTime = Math.max(1.5, (avgCook / permSpeedMult) + 3.4);
+      const activeStreams = Math.min(GameState.tablesCount, staffCount);
+      const rawBaseGps = (avgProfit * activeStreams) / cycleTime;
+      const minStageGps = (stage.menus[0].baseProfit * 2) / 5.5;
+      return Math.max(minStageGps, rawBaseGps);
+    }
+
     function calculateStageUpkeepCosts() {
       const stage = STAGES[GameState.stageIndex];
-      const baseUnit = stage.menus[0].baseProfit;
-      // 렌트(임대료: 테이블 수 및 스테이지 비례), 인건비(셰프+알바 수 비례), 유틸리티(설비 개수 및 기본 공과금)
+      // 120초(날씨 변화 1주기) 동안의 상시 영업 매출 규모와 스테이지·매장 확장 수준에 비례하도록 밸런스 강화
+      const baseCycleRev = getBaseOperatingGps() * 120;
+      const stagePressure = 1 + GameState.stageIndex * 0.03; // 고스테이지일수록 고정비 압박 상승
+
+      const maxTables = getMaxTablesForStage();
+      const extraTables = Math.max(0, GameState.tablesCount - 2);
+      const extraStaff = Math.max(0, (GameState.chefsCount - 1) * 1.25 + (GameState.serversCount - 1) * 1.0);
       const decorCount = getAvailableStageDecors().reduce((acc, d) => acc + (GameState.decorLevels[d.id] || 0), 0);
-      const rentCost = Math.max(10, Math.floor(baseUnit * (4 + GameState.tablesCount * 1.5)));
-      const laborCost = Math.max(8, Math.floor(baseUnit * (GameState.chefsCount * 3.0 + GameState.serversCount * 2.2)));
-      const utilityCost = Math.max(5, Math.floor(baseUnit * (2.5 + decorCount * 0.8)));
+      const unlockedMenuCount = getUnlockedMenus().length;
+
+      // 렌트(입지 및 테이블 규모), 인건비(셰프·알바 인원 및 숙련도), 유틸리티(조리 화구·설비 가동량)
+      const rentRate = (0.165 + extraTables * 0.022 + (maxTables - 3) * 0.01) * stagePressure;
+      const laborRate = (0.155 + extraStaff * 0.016 + GameState.speedUpgradeLvl * 0.003) * stagePressure;
+      const utilityRate = (0.105 + unlockedMenuCount * 0.005 + Math.min(0.06, decorCount * 0.003)) * stagePressure;
+
+      const minUnit = stage.menus[0].baseProfit;
+      const rentCost = Math.max(Math.floor(minUnit * 10), Math.floor(baseCycleRev * rentRate));
+      const laborCost = Math.max(Math.floor(minUnit * 9), Math.floor(baseCycleRev * laborRate));
+      const utilityCost = Math.max(Math.floor(minUnit * 6), Math.floor(baseCycleRev * utilityRate));
       const totalUpkeep = rentCost + laborCost + utilityCost;
       return { rentCost, laborCost, utilityCost, totalUpkeep };
     }
@@ -2891,7 +3074,19 @@
       const box = document.getElementById('angry-choices-container');
       box.innerHTML = '';
 
-      quiz.choices.forEach((ch) => {
+      // 정답이 항상 1번에 고정되지 않도록 손님별로 보기 순서를 피셔-예이츠(Fisher-Yates) 방식으로 무작위 셔플!
+      if (!Array.isArray(cust.shuffledChoices)) {
+        const copied = quiz.choices.map(ch => ({ text: ch.text, correct: ch.correct }));
+        for (let i = copied.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = copied[i];
+          copied[i] = copied[j];
+          copied[j] = temp;
+        }
+        cust.shuffledChoices = copied;
+      }
+
+      cust.shuffledChoices.forEach((ch, idx) => {
         const btn = document.createElement('button');
         btn.className = 'buy-btn';
         btn.style.width = '100%';
@@ -2902,7 +3097,7 @@
         btn.style.color = '#3E2723';
         btn.style.border = '2px solid #E59866';
         btn.style.boxShadow = '0 2px 0 #D89258';
-        btn.textContent = ch.text;
+        btn.textContent = `${idx + 1}. ${ch.text}`;
         btn.addEventListener('click', () => {
           if (ch.correct) {
             // 정답 선택 -> 화가 풀려 보너스 골드를 주고 별점 회복 후 퇴장!
@@ -2945,8 +3140,8 @@
       const picked = trashTypes[Math.floor(Math.random() * trashTypes.length)];
       const angle = Math.random() * Math.PI * 2;
       const dist = 36 + Math.random() * 24;
-      const tx = Math.max(65, Math.min(World.mapWidth - 65, c.x + Math.cos(angle) * dist));
-      const ty = Math.max(150, Math.min(World.mapHeight - 50, c.y + 12 + Math.sin(angle) * dist));
+      const tx = Math.max(52, Math.min(World.mapWidth - 52, c.x + Math.cos(angle) * dist));
+      const ty = Math.max(135, Math.min(World.mapHeight - 38, c.y + 12 + Math.sin(angle) * dist));
 
       World.trashes.push({
         id: 'trash_' + Date.now() + '_' + Math.random(),
@@ -2974,26 +3169,42 @@
       const eatDur = Math.max(1.2, 2.5 / (1 + jukeboxBonus));
       const curStageNum = STAGES[GameState.stageIndex].id; // 1 ~ 10
 
-      // 특수 역할 결정: NORMAL | VIP | TROUBLEMAKER | ANGRY | GOURMET | INFLUENCER
+      // 특수 역할 결정: Stage 3부터 순차 해금 & 스테이지가 오를수록 등장 빈도 증가!
+      // Stage 1~2: 일반 & 기본 VIP만 등장
+      // Stage 3: 진상(TROUBLEMAKER) 등장
+      // Stage 4: 진상 & 화난(ANGRY) 등장
+      // Stage 5: 진상 & 화난 & 미식가(GOURMET) 등장
+      // Stage 6~10: 진상 & 화난 & 미식가 & 인플루언서(INFLUENCER) 모두 등장
       let specialRole = forcedRole || 'NORMAL';
       if (!forcedRole) {
         if (isSpecial) {
-          // 특별 방문객 중 일부는 미식가(골드 10배) 또는 인플루언서(SNS 홍보 피버) 미니게임 손님으로 등장!
           const rollSpecial = Math.random();
-          if (rollSpecial < 0.32) specialRole = 'GOURMET';
-          else if (rollSpecial < 0.62) specialRole = 'INFLUENCER';
-          else specialRole = 'VIP';
-        } else {
-          // 스테이지가 오를수록 진상 고양이(TROUBLEMAKER)와 화난 고양이(ANGRY) 발생 확률 및 동시 등장 상한 증가!
-          const maxNuisanceAllowed = Math.min(Math.max(1, GameState.tablesCount - 1), Math.ceil(curStageNum * 0.65));
+          if (curStageNum < 5) {
+            specialRole = 'VIP';
+          } else if (curStageNum === 5) {
+            // Stage 5: 미식가 고양이 해금
+            specialRole = rollSpecial < 0.50 ? 'GOURMET' : 'VIP';
+          } else {
+            // Stage 6~10: 미식가 & 인플루언서 모두 등장하며 스테이지 비례 비중 상승 (56% -> 84%)
+            const eventShare = Math.min(0.84, 0.56 + (curStageNum - 6) * 0.07);
+            if (rollSpecial < eventShare * 0.5) specialRole = 'GOURMET';
+            else if (rollSpecial < eventShare) specialRole = 'INFLUENCER';
+            else specialRole = 'VIP';
+          }
+        } else if (curStageNum >= 3) {
+          // Stage 3부터 진상/화난 고양이 등장 및 스테이지 상승에 따라 확률 증가 (13% -> 41%)
+          const stageCap = curStageNum <= 4 ? 1 : (curStageNum <= 7 ? 2 : 3);
+          const maxNuisanceAllowed = Math.min(Math.max(1, GameState.tablesCount - 1), stageCap);
           const currentNuisanceCount = World.customers.filter(c => c.specialRole === 'TROUBLEMAKER' || c.specialRole === 'ANGRY').length;
           if (currentNuisanceCount < maxNuisanceAllowed) {
-            const nuisanceProb = Math.min(0.36, 0.08 + (curStageNum - 1) * 0.028);
+            const nuisanceProb = Math.min(0.42, 0.13 + (curStageNum - 3) * 0.04);
             const r = Math.random();
-            if (r < nuisanceProb * 0.52) {
-              specialRole = 'TROUBLEMAKER';
-            } else if (r < nuisanceProb) {
-              specialRole = 'ANGRY';
+            if (r < nuisanceProb) {
+              if (curStageNum === 3) {
+                specialRole = 'TROUBLEMAKER';
+              } else {
+                specialRole = Math.random() < 0.5 ? 'TROUBLEMAKER' : 'ANGRY';
+              }
             }
           }
         }
@@ -3039,7 +3250,14 @@
         troubleMode: Math.random() < 0.5 ? 'SLEEP' : 'RIOT', // 잠듦 또는 난동
         tapsRemaining: tapsNeeded,
         maxTaps: tapsNeeded,
-        quizIdx: Math.floor(Math.random() * ANGRY_COMPLAINT_QUIZZES.length),
+        quizIdx: (() => {
+          let qIdx = Math.floor(Math.random() * ANGRY_COMPLAINT_QUIZZES.length);
+          if (ANGRY_COMPLAINT_QUIZZES.length > 1 && qIdx === GameState.lastAngryQuizIdx) {
+            qIdx = (qIdx + 1 + Math.floor(Math.random() * (ANGRY_COMPLAINT_QUIZZES.length - 1))) % ANGRY_COMPLAINT_QUIZZES.length;
+          }
+          GameState.lastAngryQuizIdx = qIdx;
+          return qIdx;
+        })(),
         priorityQueued: false,
         trashSpawnedDuringMeal: false,
         vipProfile: vipProfile,
@@ -3076,14 +3294,14 @@
 
       for (let i = 0; i < waveCount; i++) {
         const fromRight = Math.random() < 0.5;
-        const startX = fromRight ? World.mapWidth - 25 : 25;
-        const startY = 140 + Math.random() * (World.mapHeight - 190);
+        const startX = fromRight ? World.mapWidth - 24 : 24;
+        const startY = 135 + Math.random() * (World.mapHeight - 175);
         World.mice.push({
           id: 'mouse_' + Date.now() + '_' + Math.random() + '_' + i,
           x: startX,
           y: startY,
-          patrolX: 160 + Math.random() * (World.mapWidth - 320),
-          patrolY: 180 + Math.random() * (World.mapHeight - 240),
+          patrolX: 80 + Math.random() * (World.mapWidth - 160),
+          patrolY: 145 + Math.random() * (World.mapHeight - 190),
           speed: (118 + Math.random() * 22) * slowFactor,
           stolenGold: 0,
           bobPhase: Math.random() * Math.PI * 2
@@ -3137,8 +3355,8 @@
       const emojis = ['🎉', '✨', '⭐', '🎊', '🐾'];
       const bursts = [
         { x: centerX, y: centerY },
-        { x: centerX - 150, y: centerY - 25 },
-        { x: centerX + 150, y: centerY - 25 }
+        { x: Math.max(36, centerX - 90), y: Math.max(36, centerY - 20) },
+        { x: Math.min(World.mapWidth - 36, centerX + 90), y: Math.max(36, centerY - 20) }
       ];
 
       bursts.forEach((b, bIdx) => {
@@ -3207,11 +3425,20 @@
       }
 
       GameState.weatherTimer -= dt;
+      if (!GameState.upkeepWarnedThisCycle && GameState.weatherTimer <= 20 && GameState.weatherTimer > 0) {
+        const { totalUpkeep } = calculateStageUpkeepCosts();
+        if (GameState.gold < totalUpkeep) {
+          GameState.upkeepWarnedThisCycle = true;
+          SoundFX.squeak();
+          showToast(`🚨 유지비 정산 20초 전! 청구액(💰${formatNumber(totalUpkeep)})보다 보유 골드가 부족합니다! 파산 주의!`);
+        }
+      }
       if (GameState.weatherTimer <= 0) {
         GameState.weatherTimer = 120;
+        GameState.upkeepWarnedThisCycle = false;
         GameState.weatherIndex = (GameState.weatherIndex + 1) % WEATHER_CYCLE.length;
         const w = WEATHER_CYCLE[GameState.weatherIndex];
-        // [요구사항 3]: 시간이 바뀔 때마다 렌트, 인건비, 유틸리티 비용 자동 지불 및 미납 시 파산 처리!
+        // 시간이 바뀔 때마다 렌트, 인건비, 유틸리티 비용 자동 지불 및 미납 시 파산 처리!
         processWeatherChangeUpkeepAndBankruptcy(w);
         renderMenuTab();
       }
@@ -3289,8 +3516,8 @@
         } else {
           // 팁이 없을 때는 매장을 돌아다니며 다음 팁이 떨어지길 노림 (잡기 전까지 사라지지 않음!)
           if (moveTowards(m, m.patrolX, m.patrolY, m.speed * 0.75, dt)) {
-            m.patrolX = 140 + Math.random() * (World.mapWidth - 280);
-            m.patrolY = 160 + Math.random() * (World.mapHeight - 220);
+            m.patrolX = 80 + Math.random() * (World.mapWidth - 160);
+            m.patrolY = 145 + Math.random() * (World.mapHeight - 190);
           }
         }
       }
@@ -3302,7 +3529,9 @@
       World.spawnTimer += dt;
       if (World.spawnTimer >= baseSpawnInterval) {
         World.spawnTimer = 0;
-        const vipChance = 0.085 + getGoodLevel('vipBell') * 0.0025 + (GameState.decorLevels.cat_tower || 0) * 0.015;
+        const curStageIdForSpawn = STAGES[GameState.stageIndex].id;
+        const stageSpecialBonus = curStageIdForSpawn >= 5 ? (curStageIdForSpawn - 4) * 0.026 : 0;
+        const vipChance = Math.min(0.42, 0.08 + stageSpecialBonus + getGoodLevel('vipBell') * 0.0025 + (GameState.decorLevels.cat_tower || 0) * 0.015);
         spawnCustomer(Math.random() < vipChance);
       }
 
@@ -3362,10 +3591,11 @@
           moveTowards(c, c.targetX, c.targetY, customerSpeed * 1.5, dt);
           c.eatTimer += dt;
 
-          // [요구사항 4]: 식사 도중 확률적으로 종이·식기·음식물 쓰레기를 바닥에 던짐!
-          if (!c.trashSpawnedDuringMeal && c.eatTimer >= c.eatDuration * 0.5) {
+          // 식사 쓰레기는 Stage 2부터 발동 (Stage 1에서는 발생하지 않음)
+          const curStageIdForTrash = STAGES[GameState.stageIndex].id;
+          if (curStageIdForTrash >= 2 && !c.trashSpawnedDuringMeal && c.eatTimer >= c.eatDuration * 0.5) {
             c.trashSpawnedDuringMeal = true;
-            const trashProb = Math.min(0.65, 0.30 + STAGES[GameState.stageIndex].id * 0.03);
+            const trashProb = Math.min(0.68, 0.28 + (curStageIdForTrash - 1) * 0.04);
             if (Math.random() < trashProb) {
               spawnFloorTrashNearTable(c);
             }
@@ -3459,8 +3689,8 @@
             s.state = 'MOVE_TO_ORDER';
           } else {
             const st = World.stations[s.stationIndex % World.stations.length];
-            s.homeX = s.role === 'chef' ? st.x : (World.cashierPos.x + ((s.stationIndex % 3) - 1) * 60);
-            s.homeY = s.role === 'chef' ? (st.y + 32) : (World.cashierPos.y + 38);
+            s.homeX = s.role === 'chef' ? st.x : (World.cashierPos.x + ((s.stationIndex % 3) - 1) * 38);
+            s.homeY = s.role === 'chef' ? (st.y + 30) : (World.cashierPos.y + 34);
             if (!moveTowards(s, s.homeX, s.homeY, staffSpeed * 0.75, dt)) {
               s.isMoving = true;
               s.bobPhase += dt * 12;
@@ -3542,11 +3772,11 @@
     // [요구사항 2: 조리대 부근을 포함해 매장 어디든 자유 배치 & 조리대/카운터/테이블/복수 인테리어 이동]
     // =========================================================================
     function sanitizeFloorCoord(wx, wy) {
-      // 기존에 조리대 부근(kitchenHeight 아래)을 막던 제한을 완전히 해제하여 매장 어디든 자유 배치 허용!
-      const minX = 55;
-      const maxX = World.mapWidth - 55;
-      const minY = 72;
-      const maxY = World.mapHeight - 45;
+      // 기본 고정 매장(520x400) 내부 어디든 자유 배치 가능하도록 좌표 보정
+      const minX = 48;
+      const maxX = World.mapWidth - 48;
+      const minY = 76;
+      const maxY = World.mapHeight - 38;
       return {
         x: Math.round(Math.max(minX, Math.min(maxX, wx))),
         y: Math.round(Math.max(minY, Math.min(maxY, wy)))
@@ -3567,11 +3797,12 @@
     canvas.addEventListener('pointerdown', (e) => {
       const wpt = screenToWorld(e.clientX, e.clientY);
 
-      // 1) 신규 테이블 배정 대기 상태
+      // 1) 신규 테이블 배정 대기 상태 (스테이지별 상한: St.1~3 3개 / St.4~6 4개 / St.7~10 5개)
       if (PlacementState.pendingMode === 'NEW_TABLE') {
         const pos = sanitizeFloorCoord(wpt.x, wpt.y);
         const newIdx = GameState.tablesCount;
-        if (newIdx < 10 && GameState.gold >= PlacementState.pendingCost) {
+        const maxTables = getMaxTablesForStage();
+        if (newIdx < maxTables && GameState.gold >= PlacementState.pendingCost) {
           GameState.gold -= PlacementState.pendingCost;
           GameState.tablesCount++;
           World.tables[newIdx].x = pos.x;
@@ -3791,14 +4022,7 @@
         }
       }
 
-      // 7) 빈 공간 드래그 시 카메라 시점 이동
-      Camera.isDraggingCam = true;
-      Camera.dragStartX = e.clientX;
-      Camera.dragStartY = e.clientY;
-      Camera.camStartX = Camera.x;
-      Camera.camStartY = Camera.y;
-      Camera.movedDist = 0;
-      try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+      // 매장 화면 고정 상태이므로 빈 공간 드래그 시 카메라 좌우/상하 이동 없음
     });
 
     canvas.addEventListener('pointermove', (e) => {
@@ -3845,14 +4069,6 @@
         return;
       }
 
-      if (Camera.isDraggingCam) {
-        const dx = (e.clientX - Camera.dragStartX) / Camera.zoom;
-        const dy = (e.clientY - Camera.dragStartY) / Camera.zoom;
-        Camera.movedDist = Math.hypot(dx, dy);
-        Camera.x = Camera.camStartX - dx;
-        Camera.y = Camera.camStartY - dy;
-        clampCamera();
-      }
     });
 
     function endPointerInteraction() {
@@ -3877,37 +4093,10 @@
         PlacementState.draggingDecorInfo = null;
         saveGameToStorage();
       }
-      Camera.isDraggingCam = false;
     }
 
     canvas.addEventListener('pointerup', endPointerInteraction);
     canvas.addEventListener('pointercancel', endPointerInteraction);
-
-    canvas.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-      setCameraZoom(Camera.zoom * zoomFactor);
-    }, { passive: false });
-
-    function setCameraZoom(newZoom) {
-      const centerWorldX = Camera.x + (World.viewWidth / 2) / Camera.zoom;
-      const centerWorldY = Camera.y + (World.viewHeight / 2) / Camera.zoom;
-      Camera.zoom = Math.max(Camera.minZoom, Math.min(Camera.maxZoom, newZoom));
-      Camera.x = centerWorldX - (World.viewWidth / 2) / Camera.zoom;
-      Camera.y = centerWorldY - (World.viewHeight / 2) / Camera.zoom;
-      clampCamera();
-    }
-
-    document.getElementById('btn-zoom-in').addEventListener('click', () => setCameraZoom(Camera.zoom + 0.12));
-    document.getElementById('btn-zoom-out').addEventListener('click', () => setCameraZoom(Camera.zoom - 0.12));
-    document.getElementById('btn-cam-reset').addEventListener('click', () => {
-      Camera.zoom = 0.78;
-      Camera.x = 120;
-      Camera.y = 0;
-      clampCamera();
-    });
-    document.getElementById('btn-pan-left').addEventListener('click', () => { Camera.x -= 140; clampCamera(); });
-    document.getElementById('btn-pan-right').addEventListener('click', () => { Camera.x += 140; clampCamera(); });
 
     const editTableBtn = document.getElementById('btn-toggle-edit-table');
     editTableBtn.addEventListener('click', () => {
@@ -6334,18 +6523,16 @@
       ctx.lineWidth = 2.5;
       ctx.beginPath(); ctx.moveTo(6, 68); ctx.lineTo(mw - 6, 68); ctx.stroke();
 
-      // 좌·우 대형 파노라마 창문 렌더링
-      drawLargePanoramaWindow(190, 10, 265, 50, stage, curWeather);
-      drawLargePanoramaWindow(640, 10, 265, 50, stage, curWeather);
+      // 중앙 단일 파노라마 창문 1개만 유지 (나머지 1개 삭제)
+      drawLargePanoramaWindow(Math.round((mw - 265) / 2), 10, 265, 50, stage, curWeather);
 
       // 벽면 칠판 메뉴판 & OPEN 사인
-      drawWallMenuBoard(105, 36, 52, 36);
-      drawWallMenuBoard(550, 36, 58, 36);
-      drawHangingOpenSign(985, 38);
+      drawWallMenuBoard(67, 36, 50, 34);
+      drawHangingOpenSign(mw - 66, 38);
 
       // 좌우 코너 기본 손그림 화분
-      drawPottedLeafyPlant(58, 105, 0.85, 0);
-      drawPottedLeafyPlant(1080, 105, 0.85, 1);
+      drawPottedLeafyPlant(38, 102, 0.80, 0);
+      drawPottedLeafyPlant(mw - 38, 102, 0.80, 1);
 
       // 3. 아이소메트릭 주방 조리대 4곳 렌더링 (배치 이동 모드에서 어디든 이동 가능!)
       World.stations.forEach((st, idx) => {
@@ -6670,8 +6857,9 @@
       const displayGps = formatGpsCompact(rawGps);
       document.getElementById('ui-gps').textContent = `${displayGps} G/s`;
 
+      const maxTables = getMaxTablesForStage();
       document.getElementById('hud-staff-count').textContent =
-        `👨‍🍳 셰프 ${GameState.chefsCount} · 🐾 알바 ${GameState.serversCount} · 🪑 테이블 ${GameState.tablesCount}/10`;
+        `👨‍🍳 셰프 ${GameState.chefsCount} · 🐾 알바 ${GameState.serversCount} · 🪑 테이블 ${GameState.tablesCount}/${maxTables}`;
       document.getElementById('hud-Guest-count').textContent =
         `🐱 손님 ${World.customers.length}명`;
 
@@ -6686,7 +6874,12 @@
       const trashBillEl = document.getElementById('hud-trash-bill-info');
       if (trashBillEl) {
         const { totalUpkeep } = calculateStageUpkeepCosts();
-        trashBillEl.textContent = `🗑️ 쓰레기 ${World.trashes.length}개 · 🧾 다음 유지비 💰${formatNumber(totalUpkeep)}`;
+        const isShort = GameState.gold < totalUpkeep;
+        const warnPrefix = (isShort && GameState.weatherTimer <= 30) ? '🚨미납위험! ' : '🧾 다음 유지비 ';
+        trashBillEl.textContent = `🗑️ 쓰레기 ${World.trashes.length}개 · ${warnPrefix}💰${formatNumber(totalUpkeep)}`;
+        trashBillEl.style.background = isShort ? 'rgba(253,224,221,0.97)' : 'rgba(255,248,240,0.94)';
+        trashBillEl.style.borderColor = isShort ? '#C0392B' : '#E59866';
+        trashBillEl.style.color = isShort ? '#922B21' : '#5D4037';
       }
 
       // 현재 날씨 및 보너스 받는 메뉴 아이콘 표시
@@ -6795,11 +6988,11 @@
               showToast(`🍽️ 신메뉴 [${menu.icon} ${menu.name}] 레시피 해금 완료!`);
             }
             SoundFX.milestone();
-            spawnConfettiBurst(540, 260);
+            spawnConfettiBurst(World.mapWidth / 2, World.mapHeight * 0.52);
           } else if (nextLvl === 10 || nextLvl === 25 || nextLvl === 50) {
             GameState.gems += 4;
             SoundFX.milestone();
-            spawnConfettiBurst(540, 280);
+            spawnConfettiBurst(World.mapWidth / 2, World.mapHeight * 0.55);
             World.floatTexts.push({
               x: Camera.x + (World.viewWidth / 2) / Camera.zoom,
               y: Camera.y + (World.viewHeight * 0.4) / Camera.zoom,
@@ -6833,9 +7026,10 @@
 
       const stageMult = Math.pow(10, GameState.stageIndex);
       const tableCost = getNextTableCost();
-      const isTableMax = GameState.tablesCount >= 10;
+      const maxTables = getMaxTablesForStage();
+      const isTableMax = GameState.tablesCount >= maxTables;
 
-      // 1) 홀 테이블 추가 배정
+      // 1) 홀 테이블 추가 배정 (St.1~3: 3개 / St.4~6: 4개 / St.7~10: 5개)
       const tableCard = document.createElement('div');
       tableCard.className = 'upgrade-card';
       tableCard.innerHTML = `
@@ -6844,18 +7038,18 @@
           <div class="card-info">
             <div class="card-title-row">
               <span class="card-title">홀 테이블 추가 배정</span>
-              <span class="lvl-badge">${GameState.tablesCount}/10</span>
+              <span class="lvl-badge">${GameState.tablesCount}/${maxTables}</span>
             </div>
-            <div class="card-sub">클릭 후 매장 바닥의 원하는 위치를 터치해 테이블을 배치합니다</div>
+            <div class="card-sub">바닥 터치로 배치 (최대 St.1~3: 3개 · St.4~6: 4개 · St.7~10: 5개)</div>
           </div>
         </div>
         <button class="buy-btn ${isTableMax ? 'maxed' : ''}" id="btn-buy-table" data-shop-id="add_table" data-cost="${tableCost}" ${isTableMax || GameState.gold < tableCost ? 'disabled' : ''}>
-          ${isTableMax ? 'MAX (10개)' : `자리 배정<br>💰${formatNumber(tableCost)}`}
+          ${isTableMax ? `MAX (${maxTables}개)` : `자리 배정<br>💰${formatNumber(tableCost)}`}
         </button>
       `;
 
       tableCard.querySelector('#btn-buy-table').addEventListener('click', () => {
-        if (GameState.tablesCount >= 10) return;
+        if (GameState.tablesCount >= getMaxTablesForStage()) return;
         const cost = getNextTableCost();
         if (GameState.gold < cost) return;
         PlacementState.pendingMode = 'NEW_TABLE';
@@ -7402,7 +7596,7 @@
 
       const buyTableBtn = document.getElementById('btn-buy-table');
       if (buyTableBtn) {
-        buyTableBtn.disabled = GameState.tablesCount >= 10 || GameState.gold < getNextTableCost();
+        buyTableBtn.disabled = GameState.tablesCount >= getMaxTablesForStage() || GameState.gold < getNextTableCost();
       }
 
       document.querySelectorAll('[data-shop-id]').forEach(btn => {
@@ -7642,7 +7836,7 @@
       devModalBackdrop.classList.remove('show');
     });
     document.getElementById('btn-dev-spawn-trash').addEventListener('click', () => {
-      const t = World.tables[0] || { x: 350, y: 320 };
+      const t = World.tables[0] || { x: 260, y: 245 };
       spawnFloorTrashNearTable(t);
       updateTopBarUI();
       showToast('🗑️ 바닥에 테스트 쓰레기가 생성되었습니다! 클릭해서 치워보세요.');
@@ -7742,12 +7936,12 @@
         }
 
         if (typeof data.tablesCount === 'number') {
-          GameState.tablesCount = Math.min(10, Math.max(2, data.tablesCount));
+          GameState.tablesCount = Math.min(getMaxTablesForStage(validStage), Math.max(2, data.tablesCount));
         }
         if (Array.isArray(data.tablePositions)) {
           data.tablePositions.forEach((pt, idx) => {
-            if (idx < 10 && pt && typeof pt.x === 'number' && typeof pt.y === 'number') {
-              GameState.tablePositions[idx] = { x: pt.x, y: pt.y };
+            if (idx < MAX_TOTAL_TABLES && pt && typeof pt.x === 'number' && typeof pt.y === 'number') {
+              GameState.tablePositions[idx] = sanitizeFloorCoord(pt.x, pt.y);
             }
           });
           initWorldTables();
@@ -7769,12 +7963,12 @@
         if (Array.isArray(data.stationPositions)) {
           data.stationPositions.forEach((pt, idx) => {
             if (idx < World.stations.length && pt && typeof pt.x === 'number' && typeof pt.y === 'number') {
-              GameState.stationPositions[idx] = { x: pt.x, y: pt.y };
+              GameState.stationPositions[idx] = sanitizeFloorCoord(pt.x, pt.y);
             }
           });
         }
         if (data.cashierPos && typeof data.cashierPos.x === 'number' && typeof data.cashierPos.y === 'number') {
-          GameState.cashierPos = { x: data.cashierPos.x, y: data.cashierPos.y };
+          GameState.cashierPos = sanitizeFloorCoord(data.cashierPos.x, data.cashierPos.y);
         }
         initWorldTables();
 
@@ -7782,14 +7976,16 @@
           CAFE_DECOR_ITEMS.forEach(d => {
             const pt = data.decorPositions[d.id];
             if (pt && typeof pt.x === 'number' && typeof pt.y === 'number') {
-              GameState.decorPositions[d.id] = { x: pt.x, y: pt.y };
+              GameState.decorPositions[d.id] = sanitizeFloorCoord(pt.x, pt.y);
             }
           });
         }
         if (data.decorInstances && typeof data.decorInstances === 'object') {
           CAFE_DECOR_ITEMS.forEach(d => {
             if (Array.isArray(data.decorInstances[d.id])) {
-              GameState.decorInstances[d.id] = data.decorInstances[d.id].filter(pt => pt && typeof pt.x === 'number' && typeof pt.y === 'number');
+              GameState.decorInstances[d.id] = data.decorInstances[d.id]
+                .filter(pt => pt && typeof pt.x === 'number' && typeof pt.y === 'number')
+                .map(pt => sanitizeFloorCoord(pt.x, pt.y));
             }
           });
         }
