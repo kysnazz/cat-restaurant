@@ -1216,6 +1216,13 @@
       box-shadow: 0 4px 0 #C84B31;
     }
 
+    .offline-claim-btn:disabled {
+      background: #D7CCC8;
+      color: #8D6E63;
+      box-shadow: 0 4px 0 #BCAAA4;
+      cursor: not-allowed;
+    }
+
     /* 토스트 */
     .toast-area {
       position: absolute;
@@ -1338,7 +1345,7 @@
     <div class="toast-area" id="toast-area"></div>
 
     <!-- 오프라인 방치 보상 팝업 모달 -->
-    <div class="modal-backdrop" id="offline-modal-backdrop">
+    <div class="modal-backdrop" id="offline-modal-backdrop" style="z-index:122;">
       <div class="offline-modal">
         <div class="offline-modal-icon">🐱💤💰</div>
         <h2>오프라인 방치 수익 도착!</h2>
@@ -1405,8 +1412,20 @@
       </div>
     </div>
 
+    <!-- [인게임 유지비(렌트·인건비·유틸리티) 직접 지불 모달창] -->
+    <div class="modal-backdrop" id="upkeep-bill-modal-backdrop" style="z-index:119;">
+      <div class="offline-modal" style="border-color:#E67E22;max-width:410px;">
+        <div class="offline-modal-icon" id="upkeep-bill-icon">🧾🏢💡</div>
+        <h2 style="color:#A04000;">매장 유지비 청구서</h2>
+        <p id="upkeep-bill-desc" style="font-size:0.83rem;color:#3E2723;line-height:1.45;margin-bottom:10px;"></p>
+        <div class="offline-stats-box" id="upkeep-bill-stats-box" style="background:#FEF9E7;border-color:#F5CBA7;text-align:left;"></div>
+        <button class="offline-claim-btn" id="btn-pay-upkeep" style="margin-bottom:6px;">💰 유지비 지불하기 🐾</button>
+        <button class="offline-claim-btn" id="btn-upkeep-bankrupt" style="display:none;background:linear-gradient(135deg,#E74C3C,#C0392B);box-shadow:0 4px 0 #922B21;">💸 지불 불가 (파산 처리 확인)</button>
+      </div>
+    </div>
+
     <!-- [신규 요구사항 3: 렌트·인건비·유틸리티 비용 미납 파산 알림 모달창] -->
-    <div class="modal-backdrop" id="bankrupt-modal-backdrop" style="z-index:119;">
+    <div class="modal-backdrop" id="bankrupt-modal-backdrop" style="z-index:120;">
       <div class="offline-modal" style="border-color:#C0392B;max-width:400px;">
         <div class="offline-modal-icon">💸😿📉</div>
         <h2 style="color:#C0392B;">유지비 미납 파산 발생!</h2>
@@ -2255,6 +2274,7 @@
       weatherIndex: 0,
       weatherTimer: 120,
       upkeepWarnedThisCycle: false,
+      pendingUpkeepBill: null,
       lastAngryQuizIdx: -1,
       starRating: 5.0,
       snsBoostRemaining: 0,
@@ -2622,6 +2642,11 @@
       GameState.cashierPos = { x: DEFAULT_CASHIER_POS.x, y: DEFAULT_CASHIER_POS.y };
       GameState.weatherTimer = 120;
       GameState.upkeepWarnedThisCycle = false;
+      GameState.pendingUpkeepBill = null;
+      const billBackdrop = document.getElementById('upkeep-bill-modal-backdrop');
+      if (billBackdrop) billBackdrop.classList.remove('show');
+      const bkBackdrop = document.getElementById('bankrupt-modal-backdrop');
+      if (bkBackdrop) bkBackdrop.classList.remove('show');
 
       GameState.chefsCount = 1;
       GameState.serversCount = 1;
@@ -3002,66 +3027,150 @@
       return { rentCost, laborCost, utilityCost, totalUpkeep };
     }
 
+    function openBankruptModalFromBill(bill) {
+      const { rentCost, laborCost, utilityCost, totalUpkeep } = bill;
+      const bankruptModal = document.getElementById('bankrupt-modal-backdrop');
+      const descEl = document.getElementById('bankrupt-modal-desc');
+      const statsEl = document.getElementById('bankrupt-stats-box');
+
+      statsEl.innerHTML = `
+        <div style="display:flex;justify-content:space-between;"><span>🏢 매장 렌트비</span><strong>💰${formatNumber(rentCost)}</strong></div>
+        <div style="display:flex;justify-content:space-between;"><span>👨‍🍳 직원 인건비</span><strong>💰${formatNumber(laborCost)}</strong></div>
+        <div style="display:flex;justify-content:space-between;"><span>💡 유틸리티 공과금</span><strong>💰${formatNumber(utilityCost)}</strong></div>
+        <div style="border-top:1px dashed #E74C3C;padding-top:5px;margin-top:3px;color:#C0392B;font-weight:900;display:flex;justify-content:space-between;">
+          <span>총 청구액 (보유: 💰${formatNumber(GameState.gold)})</span>
+          <span>💰${formatNumber(totalUpkeep)}</span>
+        </div>
+      `;
+
+      if (GameState.stageIndex > 0) {
+        const prevIdx = GameState.stageIndex - 1;
+        const prevStage = STAGES[prevIdx];
+        descEl.innerHTML = `청구된 매장 유지비(<strong>💰${formatNumber(totalUpkeep)}</strong>)를 지불할 골드가 부족하여 <strong>파산</strong>했습니다!<br><br>이전 스테이지인 <strong>[Stage ${prevStage.id}: ${prevStage.name}]</strong>에서 다시 시작합니다.`;
+        document.getElementById('btn-confirm-bankrupt').onclick = () => {
+          GameState.pendingUpkeepBill = null;
+          bankruptModal.classList.remove('show');
+          const startCost = STAGES[prevIdx].menus[0].baseCost;
+          GameState.gold = Math.max(50, Math.floor(startCost * 1.5));
+          GameState.starRating = 5.0;
+          setupStage(prevIdx);
+          saveGameToStorage();
+          showToast(`📉 파산 처리되어 Stage ${prevStage.id} [${prevStage.name}]에서 재기합니다!`);
+        };
+      } else {
+        descEl.innerHTML = `청구된 매장 유지비(<strong>💰${formatNumber(totalUpkeep)}</strong>)를 지불할 골드가 부족하여 <strong>파산</strong>했습니다!<br><br>현재 <strong>Stage 1</strong>이므로 처음부터 <strong>새로운 게임</strong>을 시작합니다.`;
+        document.getElementById('btn-confirm-bankrupt').onclick = () => {
+          GameState.pendingUpkeepBill = null;
+          bankruptModal.classList.remove('show');
+          resetAllGameDataForNewGame();
+          showToast('🌱 파산 후 Stage 1부터 새로운 마음으로 고양이 식당을 다시 시작합니다!');
+        };
+      }
+      SoundFX.squeak();
+      bankruptModal.classList.add('show');
+    }
+
+    function syncUpkeepBillModalUI() {
+      const bill = GameState.pendingUpkeepBill;
+      const modal = document.getElementById('upkeep-bill-modal-backdrop');
+      if (!bill || !modal) return;
+
+      ensureDevUnlimitedFloor();
+      const { rentCost, laborCost, utilityCost, totalUpkeep, weatherIcon, weatherName } = bill;
+      const canPay = GameState.gold >= totalUpkeep;
+      const diff = Math.abs(GameState.gold - totalUpkeep);
+
+      document.getElementById('upkeep-bill-desc').innerHTML =
+        `${weatherIcon || '🕒'} <strong>[${weatherName || '다음 영업'}]</strong> 시간대가 되어 정산서가 도착했습니다.<br>영업을 계속하려면 아래 유지비를 확인하고 직접 지불해 주세요!`;
+
+      document.getElementById('upkeep-bill-stats-box').innerHTML = `
+        <div style="display:flex;justify-content:space-between;"><span>🏢 매장 렌트비</span><strong>💰${formatNumber(rentCost)}</strong></div>
+        <div style="display:flex;justify-content:space-between;"><span>👨‍🍳 직원 인건비</span><strong>💰${formatNumber(laborCost)}</strong></div>
+        <div style="display:flex;justify-content:space-between;"><span>💡 유틸리티 공과금</span><strong>💰${formatNumber(utilityCost)}</strong></div>
+        <div style="border-top:1.5px dashed #E59866;padding-top:6px;margin-top:3px;display:flex;justify-content:space-between;font-size:0.92rem;color:#A04000;font-weight:900;">
+          <span>🧾 총 지불 금액</span><span>💰${formatNumber(totalUpkeep)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:#5D4037;">
+          <span>💼 현재 보유 골드</span><strong>💰${formatNumber(GameState.gold)}</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.82rem;font-weight:900;color:${canPay ? '#1E8449' : '#C0392B'};">
+          <span>${canPay ? '✅ 지불 후 예상 잔액' : '⚠️ 부족한 골드'}</span>
+          <span>${canPay ? '💰' + formatNumber(diff) : '-💰' + formatNumber(diff)}</span>
+        </div>
+      `;
+
+      const payBtn = document.getElementById('btn-pay-upkeep');
+      const bankruptBtn = document.getElementById('btn-upkeep-bankrupt');
+      payBtn.disabled = !canPay;
+      payBtn.textContent = canPay
+        ? `💰 ${formatNumber(totalUpkeep)}G 지불하고 영업 계속하기`
+        : `잔액 부족 (💰${formatNumber(diff)}G 부족)`;
+      bankruptBtn.style.display = canPay ? 'none' : 'block';
+    }
+
+    function openUpkeepBillModal() {
+      if (!GameState.pendingUpkeepBill) return;
+      syncUpkeepBillModalUI();
+      if (!isOnStartScreen) {
+        document.getElementById('upkeep-bill-modal-backdrop').classList.add('show');
+      }
+    }
+
+    document.getElementById('btn-pay-upkeep').addEventListener('click', () => {
+      ensureDevUnlimitedFloor();
+      const bill = GameState.pendingUpkeepBill;
+      if (!bill) return;
+      if (GameState.gold < bill.totalUpkeep) {
+        syncUpkeepBillModalUI();
+        return;
+      }
+
+      GameState.gold -= bill.totalUpkeep;
+      GameState.pendingUpkeepBill = null;
+      document.getElementById('upkeep-bill-modal-backdrop').classList.remove('show');
+
+      World.floatTexts.push({
+        x: World.cashierPos.x,
+        y: World.cashierPos.y - 26,
+        text: `🧾유지비 -${formatNumber(bill.totalUpkeep)}G 지불완료!`,
+        color: '#27AE60',
+        strokeColor: '#FFFFFF',
+        alpha: 1,
+        vy: -35,
+        age: 0,
+        scale: 1.25
+      });
+      SoundFX.coin();
+      showToast(`✅ 유지비 총 💰${formatNumber(bill.totalUpkeep)} 지불 완료! 다음 시간대 영업을 시작합니다!`);
+      saveGameToStorage();
+      updateTopBarUI();
+      renderAllTabs();
+      refreshAllCardButtons();
+    });
+
+    document.getElementById('btn-upkeep-bankrupt').addEventListener('click', () => {
+      const bill = GameState.pendingUpkeepBill;
+      if (!bill) return;
+      document.getElementById('upkeep-bill-modal-backdrop').classList.remove('show');
+      openBankruptModalFromBill(bill);
+    });
+
     function processWeatherChangeUpkeepAndBankruptcy(newWeatherObj) {
       ensureDevUnlimitedFloor();
       const { rentCost, laborCost, utilityCost, totalUpkeep } = calculateStageUpkeepCosts();
-
-      if (GameState.gold >= totalUpkeep) {
-        GameState.gold -= totalUpkeep;
-        World.floatTexts.push({
-          x: World.cashierPos.x,
-          y: World.cashierPos.y - 30,
-          text: `🧾유지비 -${formatNumber(totalUpkeep)}G 납부완료`,
-          color: '#E67E22',
-          strokeColor: '#FFFFFF',
-          alpha: 1,
-          vy: -35,
-          age: 0,
-          scale: 1.25
-        });
-        showToast(`${newWeatherObj.icon} 시간 변경! [렌트 💰${formatNumber(rentCost)} + 인건비 💰${formatNumber(laborCost)} + 유틸리티 💰${formatNumber(utilityCost)} = 총 💰${formatNumber(totalUpkeep)}] 자동 지불 완료!`);
-        updateTopBarUI();
-        refreshAllCardButtons();
-      } else {
-        // 지불하지 못할 경우 파산! 그전 스테이지에서 다시 시작하며, 스테이지 1일 경우 새로운 게임을 시작!
-        const curStageNum = STAGES[GameState.stageIndex].id;
-        const bankruptModal = document.getElementById('bankrupt-modal-backdrop');
-        const descEl = document.getElementById('bankrupt-modal-desc');
-        const statsEl = document.getElementById('bankrupt-stats-box');
-
-        statsEl.innerHTML = `
-          <div>🏢 매장 렌트비: <strong>💰${formatNumber(rentCost)}</strong></div>
-          <div>👨‍🍳 직원 인건비: <strong>💰${formatNumber(laborCost)}</strong></div>
-          <div>💡 유틸리티 공과금: <strong>💰${formatNumber(utilityCost)}</strong></div>
-          <div style="border-top:1px dashed #E74C3C;padding-top:4px;margin-top:2px;color:#C0392B;font-weight:900;">
-            총 청구액: 💰${formatNumber(totalUpkeep)} (보유: 💰${formatNumber(GameState.gold)})
-          </div>
-        `;
-
-        if (GameState.stageIndex > 0) {
-          const prevIdx = GameState.stageIndex - 1;
-          const prevStage = STAGES[prevIdx];
-          descEl.innerHTML = `시간이 바뀌어 렌트·인건비·유틸리티 비용(<strong>💰${formatNumber(totalUpkeep)}</strong>)을 지불해야 하지만 보유 골드가 부족해 <strong>파산</strong>했습니다!<br><br>이전 스테이지인 <strong>[Stage ${prevStage.id}: ${prevStage.name}]</strong>에서 다시 시작합니다.`;
-          document.getElementById('btn-confirm-bankrupt').onclick = () => {
-            bankruptModal.classList.remove('show');
-            const startCost = STAGES[prevIdx].menus[0].baseCost;
-            GameState.gold = Math.max(50, Math.floor(startCost * 1.5));
-            GameState.starRating = 5.0;
-            setupStage(prevIdx);
-            saveGameToStorage();
-            showToast(`📉 파산 처리되어 Stage ${prevStage.id} [${prevStage.name}]에서 재기합니다!`);
-          };
-        } else {
-          descEl.innerHTML = `시간이 바뀌어 렌트·인건비·유틸리티 비용(<strong>💰${formatNumber(totalUpkeep)}</strong>)을 지불해야 하지만 보유 골드가 부족해 <strong>파산</strong>했습니다!<br><br>현재 <strong>Stage 1</strong>이므로 처음부터 <strong>새로운 게임</strong>을 시작합니다.`;
-          document.getElementById('btn-confirm-bankrupt').onclick = () => {
-            bankruptModal.classList.remove('show');
-            resetAllGameDataForNewGame();
-            showToast('🌱 파산 후 Stage 1부터 새로운 마음으로 고양이 식당을 다시 시작합니다!');
-          };
-        }
-        SoundFX.squeak();
-        bankruptModal.classList.add('show');
-      }
+      GameState.pendingUpkeepBill = {
+        rentCost,
+        laborCost,
+        utilityCost,
+        totalUpkeep,
+        weatherIcon: newWeatherObj ? newWeatherObj.icon : '🕒',
+        weatherName: newWeatherObj ? newWeatherObj.name : '정산'
+      };
+      SoundFX.meow();
+      openUpkeepBillModal();
+      saveGameToStorage();
+      updateTopBarUI();
+      refreshAllCardButtons();
     }
 
     // [요구사항 2]: 화난 고양이 클릭 시 불만사항 대화 모달 오픈
@@ -3397,6 +3506,11 @@
     // 메인 시뮬레이션 업데이트 루프
     // =========================================================================
     function updateSimulation(dt) {
+      // 유지비 청구서 창이 떠서 지불 대기 중이거나 파산 확인 창이 열려 있을 때는 영업 시뮬레이션 일시정지
+      if (GameState.pendingUpkeepBill) return;
+      const bkModal = document.getElementById('bankrupt-modal-backdrop');
+      if (bkModal && bkModal.classList.contains('show')) return;
+
       const now = performance.now();
 
       if (GameState.peakTimeRemaining > 0) {
@@ -6871,6 +6985,13 @@
         starEl.textContent = `⭐ 별점 ${sr} (${statusTxt})${snsTxt}`;
       }
 
+      if (GameState.pendingUpkeepBill) {
+        const billModalEl = document.getElementById('upkeep-bill-modal-backdrop');
+        if (billModalEl && billModalEl.classList.contains('show')) {
+          syncUpkeepBillModalUI();
+        }
+      }
+
       const trashBillEl = document.getElementById('hud-trash-bill-info');
       if (trashBillEl) {
         const { totalUpkeep } = calculateStageUpkeepCosts();
@@ -7894,6 +8015,7 @@
           claimedRecipeGems: GameState.claimedRecipeGems,
           weatherIndex: GameState.weatherIndex,
           weatherTimer: GameState.weatherTimer,
+          pendingUpkeepBill: GameState.pendingUpkeepBill,
           starRating: GameState.starRating,
           goods: Object.fromEntries(
             PERMANENT_GOODS_CATALOG.map(m => [m.id, { level: getGoodLevel(m.id) }])
@@ -8030,6 +8152,9 @@
         if (typeof data.weatherTimer === 'number') {
           GameState.weatherTimer = Math.max(5, Math.min(120, data.weatherTimer));
         }
+        if (data.pendingUpkeepBill && typeof data.pendingUpkeepBill === 'object' && typeof data.pendingUpkeepBill.totalUpkeep === 'number') {
+          GameState.pendingUpkeepBill = data.pendingUpkeepBill;
+        }
 
         if (data.goods && typeof data.goods === 'object') {
           PERMANENT_GOODS_CATALOG.forEach(m => {
@@ -8075,12 +8200,15 @@
     document.getElementById('btn-claim-offline').addEventListener('click', () => {
       const reward = GameState.pendingOfflineGold || 0;
       if (reward > 0) {
-        addGold(reward, 540, 280, '오프라인 +');
+        addGold(reward, World.mapWidth / 2, World.mapHeight * 0.55, '오프라인 +');
         SoundFX.milestone();
         showToast(`💰 오프라인 방치 보상 ${formatNumber(reward)} 골드를 수령했습니다!`);
       }
       GameState.pendingOfflineGold = 0;
       document.getElementById('offline-modal-backdrop').classList.remove('show');
+      if (GameState.pendingUpkeepBill) {
+        syncUpkeepBillModalUI();
+      }
       saveGameToStorage();
     });
 
@@ -8507,6 +8635,9 @@
       isOnStartScreen = false;
       startOverlay.classList.add('hidden');
       resizeCanvas();
+      if (GameState.pendingUpkeepBill) {
+        openUpkeepBillModal();
+      }
       if (World.customers.length === 0) {
         spawnCustomer(false);
       }
